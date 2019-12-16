@@ -59,8 +59,55 @@ int maxCircularSum(int arr[],int n){
 		total+=arr[i];
 	}
 
-	return max(maxSum,total-minSum);
+	return maxSum>0 ? max(maxSum,total-minSum): maxSum;
+}
 
+
+// O(n^4)
+int maxSubmatrixSum(int arr[2][2],int n,int m){
+
+	int prefixSum[2][2];
+
+	for(int i=0;i<n;i++){
+		prefixSum[i][0] = arr[i][0];
+		for(int j=1;j<m;j++){
+			prefixSum[i][j]=prefixSum[i][j-1] + arr[i][j];
+		}
+	}
+
+	for(int i=1;i<n;i++){
+		for(int j=0;j<m;j++){
+			prefixSum[i][j]+=prefixSum[i-1][j];
+		}
+	}
+
+	for(int i=0;i<n;i++){
+		for(int j=0;j<m;j++){
+			cout<<prefixSum[i][j]<<" ";
+		}
+		cout<<endl;
+	}
+
+	// TODO
+
+	return 0;
+}
+
+int maxSubmatrixSumOptimized(int arr[2][2],int n,int m){
+
+	int sum = 0;
+
+	for(int i=0;i<n;i++){
+		for(int j=0;j<m;j++){
+
+			int start = (i+1)*(j+1);
+			int end = (n-i)*(m-j);
+
+			sum+= start*end*arr[i][j];
+		}
+	}
+
+	return sum;
 }
 
 int main(){
@@ -70,8 +117,15 @@ int main(){
 	// cout<<maxSubArray(arr,5)<<endl;
 	// cout<<kadanes_algo(arr,5)<<endl;
 
-	int arr[] = {5,-3,5};
-	cout<<maxCircularSum(arr,3)<<endl;
+	// int arr[] = {5,-3,5};
+	// cout<<maxCircularSum(arr,3)<<endl;
+
+	int arr[2][2] = {
+		{1,1},
+		{1,1},
+	};
+
+	cout<<maxSubmatrixSumOptimized(arr,2,2)<<endl;
 
 	return 0;
 }
