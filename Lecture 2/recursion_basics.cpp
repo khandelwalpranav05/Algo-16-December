@@ -108,6 +108,42 @@ int countBoardPath(int start,int end){
 	return count;
 }
 
+int countMazePath(int sr,int sc,int er,int ec){
+	if(sr==er and sc==ec){
+		return 1;
+	}
+
+	if(sr>er or sc>ec){
+		return 0;
+	}
+
+	int count = 0;
+
+	int vertical = countMazePath(sr+1,sc,er,ec);
+	int horizontal = countMazePath(sr,sc+1,er,ec);
+
+	count = horizontal + vertical;
+	return count;
+}
+
+string replacePi(string str){
+	if(str.length()==0){
+		return "";
+		// return str;
+	}
+
+	char ch = str[0];
+	string ros = str.substr(1);
+
+	string recursionResult = replacePi(ros);
+
+	if(ch=='p' and recursionResult[0]=='i'){
+		return "3.14" + recursionResult.substr(1);
+	}else{
+		return ch+recursionResult;
+	}
+}
+
 int main(){
 
 	// cout<<sumTilln(5)<<endl;
@@ -125,6 +161,12 @@ int main(){
 	// cout<<pairingProblem(3)<<endl;
 
 	// cout<<countBoardPath(0,3)<<endl;
+
+	// auto a = 20;
+
+	// cout<<countMazePath(0,0,2,2)<<endl;
+
+	cout<<replacePi("xxpixxipixx")<<endl;
 
 	return 0;
 }
