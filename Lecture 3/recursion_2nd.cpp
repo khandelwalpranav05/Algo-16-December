@@ -168,6 +168,14 @@ bool isPossible(int arr[],int n){
 	return partitionEqualSumSubset(arr,n,0,0,total);
 }
 
+int countBinaryString(int n){
+	if(n==1 or n==2){
+		return n+1;
+	}
+
+	return countBinaryString(n-1) + countBinaryString(n-2);
+}
+
 int main(){
 
 	// cout<<moveAllXToEnd("xxxkjfxxxoe")<<endl;
@@ -192,10 +200,12 @@ int main(){
 
 	// cout<<perfectSquare(13)<<endl;
 
-	int arr[] = {1,11,5,5};
-	int n = 4;
+	// int arr[] = {1,11,5,5};
+	// int n = 4;
 
-	cout<<isPossible(arr,n)<<endl;
+	// cout<<isPossible(arr,n)<<endl;
+
+	cout<<countBinaryString(3)<<endl;
 
 	return 0;
 }
