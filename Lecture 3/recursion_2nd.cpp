@@ -176,6 +176,97 @@ int countBinaryString(int n){
 	return countBinaryString(n-1) + countBinaryString(n-2);
 }
 
+bool isPalindrome(string str,int left,int right){
+	while(left<=right){
+		if(str[left]!=str[right]){
+			return false;
+		}
+		left++;
+		right--;
+	}
+
+	return true;
+}
+
+int palindromePartitioning(string str,int start,int end){
+	if(start>end){
+		return 0;
+	}
+
+	if(start==end){
+		return 0;
+	}
+
+	if(end-start ==1){
+		return str[start]==str[end] ? 0 : 1;
+	}
+
+	if(isPalindrome(str,start,end)){
+		return 0;
+	}
+
+	int minValue = INT_MAX;
+
+	for(int i=start;i<end;i++){
+
+		int leftCuts = palindromePartitioning(str,start,i);
+		int rightCuts = palindromePartitioning(str,i+1,end);
+
+		minValue = min(minValue,leftCuts + 1 + rightCuts);
+	}
+
+	return minValue;
+}
+
+void printMazePath(int sr,int sc,int er,int ec,string path){
+	if(sr==er and sc==ec){
+		cout<<path<<endl;
+		return;
+	}
+
+	if(sr>er or sc>ec){
+		return;
+	}
+
+	printMazePath(sr+1,sc,er,ec,path + "V");
+	printMazePath(sr,sc+1,er,ec,path + "H");
+}
+
+void printBoardPath(int start,int end,string path){
+	if(start==end){
+		cout<<path<<endl;
+		return;
+	}
+
+	if(start>end){
+		return;
+	}
+
+	for(int dice = 1;dice<=6;dice++){
+		char ch = dice + '0';
+		printBoardPath(start+dice,end,path + ch);
+	}
+}
+
+int countMazePathDia(int sr,int sc,int er,int ec){
+	if(sr==er and sc==ec){
+		return 1;
+	}
+
+	if(sr>er or sc>ec){
+		return 0;
+	}
+
+	int count = 0;
+
+	int vertical = countMazePathDia(sr+1,sc,er,ec);
+	int horizontal = countMazePathDia(sr,sc+1,er,ec);
+	int dia = countMazePathDia(sr+1,sc+1,er,ec);
+
+	count = horizontal + vertical + dia;
+	return count;
+}
+
 int main(){
 
 	// cout<<moveAllXToEnd("xxxkjfxxxoe")<<endl;
@@ -205,7 +296,22 @@ int main(){
 
 	// cout<<isPossible(arr,n)<<endl;
 
-	cout<<countBinaryString(3)<<endl;
+	// cout<<countBinaryString(3)<<endl;
+
+	// cout<<palindromePartitioning("abbbababchdd",0,11)<<endl;
+
+	// printMazePath(0,0,2,2,"");
+
+	// printBoardPath(0,3,"");
+
+	// cout<<countMazePathDia(0,0,2,2)<<endl;
+
+
+
+
+
+
+
 
 	return 0;
 }
