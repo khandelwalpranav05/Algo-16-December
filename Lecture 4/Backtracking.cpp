@@ -122,6 +122,27 @@ int countNQueens(int board[][4],int row,int n){
 	return count;
 }
 
+bool ratInMaze(char maze[][4],int sr,int sc,int er,int ec){
+	if(sr==er and sc==ec){
+		return true;
+	}
+
+	if(sr>er or sc>ec){
+		return false;
+	}
+
+	if(maze[sr][sc]=='X'){
+		return false;
+	}
+
+	bool horizontal = ratInMaze(maze,sr,sc+1,er,ec);
+	bool vertical = ratInMaze(maze,sr+1,sc,er,ec);
+
+	return horizontal or vertical;
+}
+
+void printRatInAMaze(char maze[][4],int sol[][4],int sr,int sc,int er,int ec)
+
 int main(){
 
 	int board[4][4] = {0};
@@ -133,20 +154,6 @@ int main(){
 
 	// cout<<countNQueens(board,0,n)<<endl;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	char maze[][4] = {
      	{'0','0','0','0'},
      	{'0','0','0','0'},
@@ -154,9 +161,11 @@ int main(){
      	{'0','X','0','0'},
      };
 
+    // cout<<ratInMaze(maze,0,0,3,3)<<endl;
+
      int sol[4][4] = {0};
 
-     // cout<<ratInMaze(maze,sol,0,0,3,3)<<endl;
+    cout<<printRatInAMaze(maze,sol,0,0,3,3)<<endl;
 
 	return 0;
 }
