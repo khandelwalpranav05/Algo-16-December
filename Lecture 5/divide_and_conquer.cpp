@@ -170,6 +170,58 @@ int uniqueNumber(int arr[],int start,int end){
 	}
 }
 
+bool isPossible(int arr[],int n,int k,int time){
+
+	int painters = 1;
+	int paintingTime = 0;
+
+	for(int i=0;i<n;i++){
+		paintingTime+=arr[i];
+
+		if(paintingTime>time){
+			painters++;
+
+			if(painters>k){
+				return false;
+			}
+			paintingTime = arr[i];
+		}
+	}
+
+	return true;
+
+}
+
+int painterProblem(int arr[],int n,int k){
+
+	int total = arr[0];
+	int maxValue = arr[0];
+
+	for(int i=1;i<n;i++){
+		total+=arr[i];
+		maxValue = max(maxValue,arr[i]);
+	}
+
+	int start = maxValue;
+	int end = total;
+
+	int minTime = total;
+
+	while(start<=end){
+
+		int mid = start + (end-start)/2;
+
+		if(isPossible(arr,n,k,mid)){
+			minTime = mid;
+			end = mid-1;
+		}else{
+			start = mid+1;
+		}
+	}
+
+	return minTime;
+}
+
 int main(){
 
 	// int arr[] = {1,2,3,56,78,90,110};
@@ -191,6 +243,12 @@ int main(){
 	// int arr[] = {1,1,2,2,4,4,5,5,6,6};
 	// int n = 11;
 	// cout<<uniqueNumber(arr,0,9)<<endl;
+
+	int arr[] = {10,20,30,40};
+	int n = 4;
+	int k = 2;
+
+	cout<<painterProblem(arr,n,k)<<endl;
 
 	return 0;
 }
