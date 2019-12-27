@@ -1,5 +1,6 @@
 #include <iostream>
 #include <algorithm>
+#include <climits>
 
 using namespace std;
 
@@ -166,6 +167,44 @@ void quickSort(int arr[],int low,int high){
 	quickSort(arr,left,high);
 }
 
+int MAX = 200;
+
+int medianOfRowWiseSortedMatrix(int arr[3][3],int row,int col){
+
+	int minRange = INT_MAX;
+	int maxRange = INT_MIN;
+
+	for(int i=0;i<row;i++){
+		maxRange = max(maxRange,arr[i][col-1]);
+		minRange = min(minRange,arr[i][0]);
+	}
+
+	// cout<<"Max range "<<maxRange<<endl;
+	// cout<<"Min Range "<<minRange<<endl;
+
+	int check = row*col/2 + 1;
+
+	while(minRange < maxRange){
+
+		int mid = minRange + (maxRange - minRange)/2;
+
+		int count = 0;
+
+		for(int i = 0;i<row;i++){
+			count+=upper_bound(arr[i],arr[i]+col,mid) - arr[i];
+		}
+
+		if(count < check){
+			minRange = mid + 1;
+		}else{
+			maxRange = mid;
+		}
+
+	}
+
+	return minRange;
+}
+
 int main(){
 
 	// int arr[] = {2,4,1,8,9};
@@ -186,26 +225,33 @@ int main(){
 	// }
 	// cout<<endl;
 
-	int arr[] = {10, 7, 8, 9, 1, 5};
-	int n = 6;
+	// int arr[] = {10, 7, 8, 9, 1, 5};
+	// int n = 6;
 
-	cout<<"BEFORE SORT"<<endl;
+	// cout<<"BEFORE SORT"<<endl;
 
-	for(int i=0;i<n;i++){
-		cout<<arr[i]<<" ";
-	}
-	cout<<endl;
+	// for(int i=0;i<n;i++){
+	// 	cout<<arr[i]<<" ";
+	// }
+	// cout<<endl;
 
-	cout<<"WHILE SORTING"<<endl;
+	// cout<<"WHILE SORTING"<<endl;
 
-	quickSort(arr,0,n-1);
+	// quickSort(arr,0,n-1);
 
-	cout<<"AFTER SORT"<<endl;
+	// cout<<"AFTER SORT"<<endl;
 
-	for(int i=0;i<n;i++){
-		cout<<arr[i]<<" ";
-	}
-	cout<<endl;
+	// for(int i=0;i<n;i++){
+	// 	cout<<arr[i]<<" ";
+	// }
+	// cout<<endl;
+
+	int arr[3][3] = 	{{2,6,8},
+						 {3,6,8},
+						 {1,3,5}};
+	int row = 3,col = 3;
+
+	cout<<medianOfRowWiseSortedMatrix(arr,row,col)<<endl;
 
 	return 0;
 }
