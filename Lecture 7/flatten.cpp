@@ -70,7 +70,17 @@ void display(node* head){
 }
 
 node* flattenLinkedList(node* head){
-	
+
+}
+
+void display(node*head){
+	node* temp = head;
+
+	while(temp!=NULL){
+		cout<<temp->data<<" ";
+		temp = temp->down;
+	}
+	cout<<endl;
 }
 
 int main(){
