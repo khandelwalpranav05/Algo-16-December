@@ -198,23 +198,100 @@ void reverseIterative(node*&head){
 	head = prev;
 }
 
+node* merge(node* a,node* b){
+	if(a==NULL){
+		return b;
+	}
+
+	if(b==NULL){
+		return a;
+	}
+
+	node* c;
+
+	if(a->data <= b->data){
+
+		c = a;
+		c->next = merge(a->next,b);
+
+	}else{
+
+		c = b;
+		c->next = merge(a,b->next);
+	}
+
+	return c;
+}
+
+node* mergeSort(node* head){
+	if(head==NULL or head->next==NULL){
+		return head;
+	}
+
+	node* mid = midPoint(head);
+
+	node* a = head;
+	node* b = mid->next;
+
+	mid->next = NULL;
+
+	a = mergeSort(a);
+	b = mergeSort(b);
+
+	node* c = merge(a,b);
+
+	return c;
+}
+
+node* kReverse(node* head,int k){
+	if(head==NULL or head->next==NULL){
+		return head;
+	}
+
+	node* curr = head;
+	node* prev = NULL;
+
+	int count = 1;
+
+	while(count<=k and curr!=NULL){
+		node* n = curr->next;
+		curr->next = prev;
+
+		prev = curr;
+		curr = n;
+		count++;
+	}
+
+	head->next = kReverse(curr,k);
+
+	return prev;
+}
+
 int main(){
 
-	// node* head = NULL;
+	node* head = NULL;
 
-	// insertAtHead(head,10);
-	// insertAtHead(head,20);
-	// insertAtHead(head,30);
-	// insertAtHead(head,40);
+	insertAtHead(head,10);
+	insertAtHead(head,20);
+	insertAtHead(head,30);
+	insertAtHead(head,40);
 
-	// insertAtTail(head,1);
-	// insertAtTail(head,2);
-	// insertAtTail(head,3);
-	// insertAtTail(head,4);
+	insertAtTail(head,1);
+	insertAtTail(head,2);
+	insertAtTail(head,3);
+	insertAtTail(head,4);
 
-	// insertAtIndex(head,890,5);
+	insertAtIndex(head,890,5);
 
-	// display(head);
+	display(head);
+
+	head = mergeSort(head);
+
+	display(head);
+
+	head = kReverse(head,3);
+
+	display(head);
 
 	// deleteAtHead(head);
 
@@ -249,20 +326,20 @@ int main(){
 
 	// cout<<length(head)<<endl;
 
-	node* head1 = NULL;
-	insertAtTail(head1,1);
-	insertAtTail(head1,3);
-	insertAtTail(head1,5);
-	insertAtTail(head1,7);
-	insertAtTail(head1,8);
-	insertAtTail(head1,10);
+	// node* head1 = NULL;
+	// insertAtTail(head1,1);
+	// insertAtTail(head1,3);
+	// insertAtTail(head1,5);
+	// insertAtTail(head1,7);
+	// insertAtTail(head1,8);
+	// insertAtTail(head1,10);
 
-	node* head2 = NULL;
-	insertAtTail(head2,2);
-	insertAtTail(head2,4);
-	insertAtTail(head2,6);
+	// node* head2 = NULL;
+	// insertAtTail(head2,2);
+	// insertAtTail(head2,4);
+	// insertAtTail(head2,6);
 	
-	node* mergesList = merge(head1,head2);
-
+	// node* mergesList = merge(head1,head2);
+	// display(mergesList);
 	return 0;
 }
