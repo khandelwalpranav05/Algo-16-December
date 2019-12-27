@@ -73,7 +73,7 @@ node* flattenLinkedList(node* head){
 
 }
 
-void display(node*head){
+void displayFlatten(node*head){
 	node* temp = head;
 
 	while(temp!=NULL){
