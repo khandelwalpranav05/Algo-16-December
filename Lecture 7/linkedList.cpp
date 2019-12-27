@@ -144,37 +144,125 @@ void deleteAtIndex(node*head,int idx){
 
 }
 
+node* reverseRecursive(node*head){
+	if(head==NULL or head->next==NULL){
+		return head;
+	}
+
+	node* newHead = reverseRecursive(head->next);
+	node* currentHead = head;
+
+	currentHead->next->next = currentHead;
+	currentHead->next = NULL;
+	return newHead;
+}
+
+bool searchRecursive(node* head,int data){
+	if(head==NULL){
+		return false;
+	}
+
+	if(head->data!=data){
+		return true;
+	}else{
+		return searchRecursive(head->next,data);
+	}
+}
+
+node* midPoint(node*head){
+
+	node* slow = head;
+	node* fast = head;
+
+	while(fast->next!=NULL and fast->next->next!=NULL){
+		slow = slow->next;
+		fast = fast->next->next;
+	}
+
+	return slow;
+}
+
+void reverseIterative(node*&head){
+
+	node* curr = head;
+	node* prev = NULL;
+
+	while(curr!=NULL){
+		node* n = curr->next;
+		curr->next = prev;
+
+		prev = curr;
+		curr = n;
+	}
+
+	head = prev;
+}
+
 int main(){
 
-	node* head = NULL;
+	// node* head = NULL;
 
-	insertAtHead(head,10);
-	insertAtHead(head,20);
-	insertAtHead(head,30);
-	insertAtHead(head,40);
+	// insertAtHead(head,10);
+	// insertAtHead(head,20);
+	// insertAtHead(head,30);
+	// insertAtHead(head,40);
 
-	insertAtTail(head,1);
-	insertAtTail(head,2);
-	insertAtTail(head,3);
-	insertAtTail(head,4);
+	// insertAtTail(head,1);
+	// insertAtTail(head,2);
+	// insertAtTail(head,3);
+	// insertAtTail(head,4);
 
-	insertAtIndex(head,890,5);
+	// insertAtIndex(head,890,5);
 
-	display(head);
+	// display(head);
 
-	deleteAtHead(head);
+	// deleteAtHead(head);
 
-	display(head);
+	// display(head);
 
-	deleteAtTail(head);
+	// deleteAtTail(head);
 
-	display(head);
+	// display(head);
 
-	deleteAtIndex(head,4);
+	// deleteAtIndex(head,4);
 
-	display(head);
+	// display(head);
 
-	cout<<length(head)<<endl;
+	// head= reverseRecursive(head);
+
+	// display(head);
+
+	// reverseIterative(head);
+
+	// display(head);
+
+
+	// deleteAtTail(head);
+
+	// display(head);
+	// node* mid = midPoint(head);
+
+	// cout<<mid->data<<endl;
+
+	// cout<<searchRecursive(head,30)<<endl;
+	// cout<<searchRecursive(head,38)<<endl;
+
+	// cout<<length(head)<<endl;
+
+	node* head1 = NULL;
+	insertAtTail(head1,1);
+	insertAtTail(head1,3);
+	insertAtTail(head1,5);
+	insertAtTail(head1,7);
+	insertAtTail(head1,8);
+	insertAtTail(head1,10);
+
+	node* head2 = NULL;
+	insertAtTail(head2,2);
+	insertAtTail(head2,4);
+	insertAtTail(head2,6);
+	
+	node* mergesList = merge(head1,head2);
 
 	return 0;
 }
