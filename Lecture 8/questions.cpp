@@ -98,6 +98,93 @@ void nextGreater(int arr[],int n){
 	}
 }
 
+bool validateStackSequences(int pushed[],int n,int popped[],int m) {
+        
+        stack<int> s;
+        int idxPop = 0;
+        
+        for(int i=0;i<n;i++){
+            
+            s.push(pushed[i]);
+            while(!s.empty() and s.top()==popped[idxPop]){
+                idxPop++;
+                s.pop();
+            }
+            
+        }
+        
+        // return s.empty();
+        return idxPop==n;
+}
+
+int histogram(int arr[],int n){
+
+	stack<int> s;
+
+	int maxArea = INT_MIN;
+
+	int i = 0;
+
+	while(i<n){
+
+		if(s.empty() or arr[i]>=arr[s.top()]){
+			s.push(i);
+			i++;
+		}else{
+
+			int extractTop = s.top();
+			s.pop();
+
+			int currArea;
+
+			if(s.empty()){
+				currArea = arr[extractTop]*i;
+			}else{
+				currArea = arr[extractTop]*(i - s.top() - 1);
+			}
+
+			maxArea = max(currArea,maxArea);
+
+			if(s.empty()){
+				cout<<"Area of height "<<arr[extractTop]<<" lying between "<<0<<" and "<<i<<endl;
+				cout<<"But Max Area abhi tak "<<maxArea<<endl;
+				cout<<"***************************"<<endl;
+			}else{
+				cout<<"Area of height "<<arr[extractTop]<<" lying between "<<(s.top()+1)<<" and "<<i<<endl;
+				cout<<"But Max Area abhi tak "<<maxArea<<endl;
+				cout<<"***************************"<<endl;
+			}
+		}
+	}
+
+	while(!s.empty()){
+		int extractTop = s.top();
+		s.pop();
+
+		int currArea;
+
+		if(s.empty()){
+			currArea = arr[extractTop]*i;
+		}else{
+			currArea = arr[extractTop]*(i - s.top() - 1);
+		}
+
+		maxArea = max(currArea,maxArea);
+
+		if(s.empty()){
+			cout<<"Area of height "<<arr[extractTop]<<" lying between "<<0<<" and "<<i<<endl;
+			cout<<"But Max Area abhi tak "<<maxArea<<endl;
+			cout<<"***************************"<<endl;
+		}else{
+			cout<<"Area of height "<<arr[extractTop]<<" lying between "<<(s.top()+1)<<" and "<<i<<endl;
+			cout<<"But Max Area abhi tak "<<maxArea<<endl;
+			cout<<"***************************"<<endl;
+		}
+	}
+
+	return maxArea;
+}
+
 int main(){
 
 	// cout<<balancedParanthesis("((()))")<<endl;
@@ -109,10 +196,15 @@ int main(){
 
 	// stockSpan(arr,n);
 
-	int arr[] = {5,3,10,2,6,13,4};
-	int n = 7;
+	// int arr[] = {5,3,10,2,6,13,4};
+	// int n = 7;
 
-	nextGreater(arr,n);
+	// nextGreater(arr,n);
+
+	int arr[] = {2,1,2,3,1};
+	int n = 5;
+
+	cout<<histogram(arr,n)<<endl;
 
 	return 0;
 }
