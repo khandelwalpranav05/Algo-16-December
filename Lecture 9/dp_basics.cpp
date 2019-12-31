@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -228,7 +229,7 @@ int perfectSquare(int n,int dp[]){
     return minValue;
 }
 
-int numSquares(int n) {
+int numSquaresMemo(int n) {
         
     int dp[n+1];
     memset(dp,-1,sizeof(dp));
@@ -238,28 +239,159 @@ int numSquares(int n) {
 
 int numSquaresDP(int n) {
         
-        int dp[n+1];
+    int dp[n+1];
         
-        dp[0] = 0;
-        dp[1] = 1;
+    dp[0] = 0;
+    dp[1] = 1;
         
-        for(int i=2;i<=n;i++){
+    for(int i=2;i<=n;i++){
             
-            int minValue = INT_MAX;
+        int minValue = INT_MAX;
             
-            for(int j=1;j*j<=i;j++){
-                int abhiTakKaAnswer = dp[i-j*j] + 1;
-                minValue = min(minValue,abhiTakKaAnswer);
-            }
-            
-            dp[i] = minValue;
+        for(int j=1;j*j<=i;j++){
+            int abhiTakKaAnswer = dp[i-j*j] + 1;
+            minValue = min(minValue,abhiTakKaAnswer);
         }
-        
-        
-        return dp[n];
+            
+        dp[i] = minValue;
     }
+        
+    return dp[n];
+}
+
+int lengthOfLIS(vector<int>& nums) {
+        
+    if(nums.size()==0){
+        return 0;
+    }
+        
+    vector<int> dp(nums.size(),1);
+        
+    for(int i=1;i<nums.size();i++){
+            
+        for(int j=0;j<i;j++){
+                
+            if(nums[i] > nums[j]){
+                dp[i] = max(dp[i],dp[j]+1);
+            }
+        }
+    }
+        
+    int maxLength = dp[0];
+        
+    for(int i=1;i<dp.size();i++){
+        maxLength = max(dp[i],maxLength);
+    }
+        
+    return maxLength;
+}
+
+
+bool partitionEqualSumSubset(int arr[],int n,int si,int sum,int total){
+	if(2*sum==total){
+		return true;
+	}
+
+	if(sum>total or si>=n){
+		return false;
+	}
+
+
+
+	bool include = partitionEqualSumSubset(arr,n,si+1,sum+arr[si],total);
+	bool exclude = partitionEqualSumSubset(arr,n,si+1,sum,total);
+
+	return exclude||include;
+}
+
+bool isPossible(int arr[],int n){
+	int total = 0;
+
+	for(int i=0;i<n;i++){
+		total+=arr[i];
+	}
+
+	if(total&1){
+		return false;
+	}
+
+	return partitionEqualSumSubset(arr,n,0,0,total);
+}
+
+int longestIncreasingSubsequence(string s1,string s2){
+	if(s1.length()==0 or s2.length()==0){
+		return 0;
+	}
+
+	char ch1 = s1[0];
+	char ch2 = s2[0];
+
+	string ros1 = s1.substr(1); 
+	string ros2 = s2.substr(1);
+
+	if(ch1==ch2){
+
+		return 1 + longestIncreasingSubsequence(ros1,ros2);
+
+	}else{
+
+		int firstChoice = longestIncreasingSubsequence(s1,ros2);
+		int secondChoice = longestIncreasingSubsequence(ros1,s2);
+
+		return max(firstChoice,secondChoice);
+	}
+}
+
+const int MAX = 100;
+
+int dp[MAX][MAX];
+
+int lcsMemo(string s1,string s2){
+	if(s1.length()==0 or s2.length()==0){
+		dp[s1.length()][s2.length()] = 0;
+		return 0;
+	}
+
+	if(dp[s1.length()][s2.length()]!=-1){
+		return dp[s1.length()][s2.length()];
+	}
+
+	char ch1 = s1[0];
+	char ch2 = s2[0];
+
+	string ros1 = s1.substr(1); 
+	string ros2 = s2.substr(1);
+
+	int result;
+
+	if(ch1==ch2){
+
+		result  = 1 + lcsMemo(ros1,ros2);
+
+	}else{
+
+		int firstChoice = lcsMemo(s1,ros2);
+		int secondChoice = lcsMemo(ros1,s2);
+
+		result =  max(firstChoice,secondChoice);
+	}
+
+	dp[s1.length()][s2.length()] = result;
+
+	for(int i=0;i<=5;i++){
+		for(int j=0;j<=5;j++){
+			cout<<dp[i][j]<<"\t";
+		}
+		cout<<endl;
+	}
+	cout<<"*********************"<<endl;
+
+	return result;
+}
 
 int main(){
+
+//*************FIBONACCI************
 
 	// cout<<fib(7)<<endl;
 
@@ -284,6 +416,8 @@ int main(){
 	// cout<<"DP took "<<(end_2 - end_1)<<endl;
 	// cout<<"Memoization took "<<(end_3 - end_2)<<endl;
 
+//*************REDUCE TO ONE************
+
 	// int n = 10;
 	// int dp[n+1];
 	// memset(dp,-1,sizeof(dp));
@@ -291,6 +425,8 @@ int main(){
 	// cout<<reduceToOneMemo(n,dp)<<endl;
 
 	// cout<<reduceToOneDP(n)<<endl;
+
+//*************COUNT BOARD PATH************
 
 	// int end = 10;
 	// int dp[end+1];
@@ -301,8 +437,30 @@ int main(){
 	// int start = 0;
 	// cout<<countBoardPathDP(start,end)<<endl;
 
-	int n = 10;
-	cout<<numSquares(n)<<endl;
+//*************PERFECT SQUARE************
+
+	// int n = 10;
+	// cout<<numSquaresMemo(n)<<endl;
+
+	// cout<<numSquaresDP(n)<<endl;
+
+//*************LONGEST INCREASING SUBSEQUENCE************
+
+	// int arr[] = {3,6,2,5,7,4,10};
+	// int n = 7;
+
+	// lengthOfLIS()
+
+//*************LEETCODE 416************
+// PARTIAL EQUAL SUBET SUM
+
+//*************LONGEST COMMON SUBSEQUENCE 1143***************
+
+	// cout<<longestIncreasingSubsequence("abcdef","gahcdef")<<endl;
+
+	memset(dp,-1,sizeof(dp));
+
+	cout<<lcsMemo("bcdef","hcpef")<<endl;
 
 	return 0;
 }
