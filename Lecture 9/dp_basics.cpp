@@ -103,6 +103,84 @@ int reduceToOneMemo(int n,int dp[]){
 	return dp[n];
 }
 
+int reduceToOneDP(int n){
+
+	int dp[n+1];
+
+	dp[0] = 0;
+	dp[1] = 0;
+	dp[2] = 1;
+	dp[3] = 1;
+
+	for(int i=4;i<=n;i++){
+
+		int count1 = INT_MAX,count2 = INT_MAX,count3 = INT_MAX;
+
+		if(i%3==0){
+			count3 = dp[i/3] + 1;
+		}
+
+		if(i%2==0){
+			count2 = dp[i/2] + 1;
+		}
+
+		count1 = dp[i-1] + 1;
+
+		dp[i] = min(count1,min(count2,count3));
+	}
+
+	return dp[n];
+}
+
+int countBoardPath(int start,int end){
+	if(start==end){
+		return 1;
+	}
+
+	if(start>end){
+		return 0;
+	}
+
+	int count = 0;
+
+	for(int dice = 1;dice<=6;dice++){
+		count+=countBoardPath(start+dice,end);
+	}
+
+	return count;
+}
+
+int countBoardPathMemo(int start,int end,int dp[]){
+	if(start==end){
+		dp[start] = 1;
+		return 1;
+	}
+
+	if(start>end){
+		return 0;
+	}
+
+	if(dp[start]!=0){
+		return dp[start];
+	}
+
+	int count = 0;
+
+	for(int dice = 1;dice<=6;dice++){
+		count+=countBoardPathMemo(start+dice,end,dp);
+	}
+
+	dp[start] = count;
+
+	for(int i=0;i<=10;i++){
+		cout<<dp[i]<<" ";
+	}
+	cout<<endl;
+	cout<<"****************"<<endl;
+
+	return count;
+}
+
 int main(){
 
 	// cout<<fib(7)<<endl;
@@ -128,11 +206,18 @@ int main(){
 	// cout<<"DP took "<<(end_2 - end_1)<<endl;
 	// cout<<"Memoization took "<<(end_3 - end_2)<<endl;
 
-	int n = 10;
-	int dp[n+1];
-	memset(dp,-1,sizeof(dp));
+	// int n = 10;
+	// int dp[n+1];
+	// memset(dp,-1,sizeof(dp));
 
-	cout<<reduceToOneMemo(n,dp)<<endl;
+	// cout<<reduceToOneMemo(n,dp)<<endl;
+
+	// cout<<reduceToOneDP(n)<<endl;
+
+	int end = 10;
+	int dp[end+1];
+	memset(dp,0,sizeof(dp));
+	cout<<countBoardPathMemo(0,end,dp)<<endl;
 
 	return 0;
 }
