@@ -181,6 +181,84 @@ int countBoardPathMemo(int start,int end,int dp[]){
 	return count;
 }
 
+int countBoardPathDP(int start,int end){
+	int dp[end + 1];
+
+	dp[end] = 1;
+
+	for(int i = end-1;i>=start;i--){
+
+		dp[i] = 0;
+
+		for(int dice = 1;dice<=6;dice++){
+
+			if(i + dice <= end){
+				dp[i]+=dp[i+dice];
+			}
+		}	
+	}
+
+	return dp[start];
+}
+    
+int perfectSquare(int n,int dp[]){
+    if(n==0){
+        return 0;
+    }
+        
+    if(dp[n]!=-1){
+        return dp[n];
+    }
+        
+    int minValue = INT_MAX;
+        
+    for(int i=1;i*i<=n;i++){
+        int abhiTakKaAnswer = perfectSquare(n - i*i,dp) + 1;
+        minValue = min(minValue,abhiTakKaAnswer);
+    }
+        
+    dp[n] = minValue;
+
+    for(int i=1;i<=10;i++){
+		cout<<dp[i]<<" ";
+	}
+	cout<<endl;
+	cout<<"****************"<<endl;
+        
+    return minValue;
+}
+
+int numSquares(int n) {
+        
+    int dp[n+1];
+    memset(dp,-1,sizeof(dp));
+        
+    return perfectSquare(n,dp);
+}
+
+int numSquaresDP(int n) {
+        
+        int dp[n+1];
+        
+        dp[0] = 0;
+        dp[1] = 1;
+        
+        for(int i=2;i<=n;i++){
+            
+            int minValue = INT_MAX;
+            
+            for(int j=1;j*j<=i;j++){
+                int abhiTakKaAnswer = dp[i-j*j] + 1;
+                minValue = min(minValue,abhiTakKaAnswer);
+            }
+            
+            dp[i] = minValue;
+        }
+        
+        
+        return dp[n];
+    }
+
 int main(){
 
 	// cout<<fib(7)<<endl;
@@ -214,10 +292,17 @@ int main(){
 
 	// cout<<reduceToOneDP(n)<<endl;
 
-	int end = 10;
-	int dp[end+1];
-	memset(dp,0,sizeof(dp));
-	cout<<countBoardPathMemo(0,end,dp)<<endl;
+	// int end = 10;
+	// int dp[end+1];
+	// memset(dp,0,sizeof(dp));
+	// cout<<countBoardPathMemo(0,end,dp)<<endl;
+
+	// int end = 10;
+	// int start = 0;
+	// cout<<countBoardPathDP(start,end)<<endl;
+
+	int n = 10;
+	cout<<numSquares(n)<<endl;
 
 	return 0;
 }
