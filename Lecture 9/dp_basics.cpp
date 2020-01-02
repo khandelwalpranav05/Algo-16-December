@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <unordered_map>
 
 using namespace std;
 
@@ -420,39 +421,41 @@ int lcsDP(string s1,string s2){
 	return lcsStorage[s1.length()][s2.length()];
 }
 
-// int findTargetSumWays(vector<int>& nums, int S) {
+int findTargetSumWays(vector<int>& nums, int S) {
         
-//     unordered_map<string,int> h;
-//     return targetSum(nums,0,0,S,h);
-// }
+    unordered_map<string,int> h;
+    return targetSum(nums,0,0,S,h);
+}
     
-// int targetSum(vector<int> nums,int si,int sum,int S,unordered_map<string,int> &h){
-//     string key = to_string(si) + " " + to_string(sum);
+int targetSum(vector<int> nums,int si,int sum,int S,unordered_map<string,int> &h){
+    string key = to_string(si) + " " + to_string(sum);
         
-//     if(h.count(key)){
-//         return h[key];
-//     }
+    if(h.count(key)){
+        return h[key];
+    }
         
-//         // cout<<key<<endl;
+        // cout<<key<<endl;
         
-//     if(si==nums.size()){
-//         if(sum==S){
-//             return 1;
-//         }else{
-//             return 0;
-//         }
-//     }
+    if(si==nums.size()){
+        if(sum==S){
+            return 1;
+        }else{
+            return 0;
+        }
+    }   
         
+    int positive = targetSum(nums,si+1,sum + nums[si],S,h);
+    int negative = targetSum(nums,si+1,sum - nums[si],S,h);
         
-//     int positive = targetSum(nums,si+1,sum + nums[si],S,h);
-//     int negative = targetSum(nums,si+1,sum - nums[si],S,h);
+    int total = positive + negative;
         
-//     int total = positive + negative;
+    h[key] = total;
         
-//     h[key] = total;
-        
-//     return total;
-// }
+    return total;
+}
+
+
+// Distinct Subsequence (Memoization using 2D Array)
 
 int distinctDP[6][4];
 
@@ -489,6 +492,41 @@ int helper(string s,int si,string t,int ti){
     cout<<"*****************"<<endl;
 
     return count;
+}
+
+// Distinct Subsequence (Memoization using HashMap)
+
+int distinctSubsequence(string s,int si,string t,int ti,unordered_map<string,int> &h){
+    string key = to_string(si) + "->" + to_string(ti);
+        
+    if(h.count(key)){
+        return h[key];
+    }
+        
+    if(ti==t.length()){
+        return 1;
+    }
+        
+    if(si==s.length()){
+        return 0;
+    }
+        
+    int count = 0;
+        
+    if(s[si]==t[ti]){
+        count+=distinctSubsequence(s,si+1,t,ti+1,h);
+    }
+    count+=distinctSubsequence(s,si+1,t,ti,h);
+        
+    h[key] = count;
+        
+    return count;
+}
+
+int numDistinct(string s, string t) {
+        
+    unordered_map<string,int> h;
+    return distinctSubsequence(s,0,t,0,h);
 }
 
 int main(){
@@ -571,7 +609,7 @@ int main(){
 	// int S = 3;
 	// int n = 5;
 
-//*************LEETCODE 115.************
+//*************LEETCODE 115. Distinct Subsequences************
 
 	string s = "bbaag";
 	string t = "bag";
@@ -579,6 +617,8 @@ int main(){
 	memset(distinctDP,-1,sizeof(distinctDP));
 
 	cout<<helper(s,0,t,0)<<endl;
+
+	// cout<<numDistinct(s,t)<<endl;
 
 	return 0;
 }
