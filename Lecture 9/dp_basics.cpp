@@ -420,38 +420,75 @@ int lcsDP(string s1,string s2){
 	return lcsStorage[s1.length()][s2.length()];
 }
 
-int findTargetSumWays(vector<int>& nums, int S) {
+// int findTargetSumWays(vector<int>& nums, int S) {
         
-    unordered_map<string,int> h;
-    return targetSum(nums,0,0,S,h);
-}
+//     unordered_map<string,int> h;
+//     return targetSum(nums,0,0,S,h);
+// }
     
-int targetSum(vector<int> nums,int si,int sum,int S,unordered_map<string,int> &h){
-    string key = to_string(si) + " " + to_string(sum);
+// int targetSum(vector<int> nums,int si,int sum,int S,unordered_map<string,int> &h){
+//     string key = to_string(si) + " " + to_string(sum);
         
-    if(h.count(key)){
-        return h[key];
+//     if(h.count(key)){
+//         return h[key];
+//     }
+        
+//         // cout<<key<<endl;
+        
+//     if(si==nums.size()){
+//         if(sum==S){
+//             return 1;
+//         }else{
+//             return 0;
+//         }
+//     }
+        
+        
+//     int positive = targetSum(nums,si+1,sum + nums[si],S,h);
+//     int negative = targetSum(nums,si+1,sum - nums[si],S,h);
+        
+//     int total = positive + negative;
+        
+//     h[key] = total;
+        
+//     return total;
+// }
+
+int distinctDP[6][4];
+
+int helper(string s,int si,string t,int ti){
+    if(ti==t.length()){
+    	distinctDP[si][ti] = 1;
+        return 1;
     }
         
-        // cout<<key<<endl;
-        
-    if(si==nums.size()){
-        if(sum==S){
-            return 1;
-        }else{
-            return 0;
-        }
+    if(si==s.length()){
+    	distinctDP[si][ti] = 0;
+    	return 0;
+    }
+
+    if(distinctDP[si][ti]!=-1){
+    	return distinctDP[si][ti];
     }
         
+    int count = 0;
         
-    int positive = targetSum(nums,si+1,sum + nums[si],S,h);
-    int negative = targetSum(nums,si+1,sum - nums[si],S,h);
-        
-    int total = positive + negative;
-        
-    h[key] = total;
-        
-    return total;
+    if(s[si]==t[ti]){
+        count+=helper(s,si+1,t,ti+1);
+    }
+    count+=helper(s,si+1,t,ti);
+    
+    distinctDP[si][ti] = count;
+
+    for(int i=0;i<6;i++){
+    	for(int j=0;j<4;j++){
+    		cout<<distinctDP[i][j]<<"\t";
+    	}
+    	cout<<endl;
+    }
+    cout<<"*****************"<<endl;
+
+    return count;
 }
 
 int main(){
@@ -530,10 +567,18 @@ int main(){
 	// cout<<lcsDP("bcdef","hcpef")<<endl;
 
 //*************LEETCODE 494. Target Sum************
-	int arr[] = {1, 1, 1, 1, 1} //Convert it to vector
-	int S = 3;
-	int n = 5;
+	// int arr[] = {1, 1, 1, 1, 1} //Convert it to vector
+	// int S = 3;
+	// int n = 5;
 
+//*************LEETCODE 115.************
+
+	string s = "bbaag";
+	string t = "bag";
+
+	memset(distinctDP,-1,sizeof(distinctDP));
+
+	cout<<helper(s,0,t,0)<<endl;
 
 	return 0;
 }
