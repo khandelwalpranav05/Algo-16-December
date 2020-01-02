@@ -577,6 +577,60 @@ int distinctSubsequenceDP(string s, string t) {
     return dp[0][0];
 }
 
+int knapSack(int value[],int weight[],int si,int capacity,int n){
+	if(si==n){
+		return 0;
+	}
+
+	int include = INT_MIN;
+	int exclude = INT_MIN;
+
+	if(weight[si]<=capacity){
+		include = value[si] + knapSack(value,weight,si+1,capacity - weight[si],n);
+	}
+
+	exclude = knapSack(value,weight,si+1,capacity,n);
+
+	int result = max(include,exclude);
+	return result;
+}
+
+int knapSackDP[5][9];
+
+int knapSackMemo(int value[],int weight[],int si,int capacity,int n){
+	if(si==n){
+		knapSackDP[si][capacity] = 0;
+		return 0;
+	}
+
+	if(knapSackDP[si][capacity]!=-1){
+		return knapSackDP[si][capacity];
+	}
+
+	int include = INT_MIN;
+	int exclude = INT_MIN;
+
+	if(weight[si]<=capacity){
+		include = value[si] + knapSackMemo(value,weight,si+1,capacity - weight[si],n);
+	}
+
+	exclude = knapSackMemo(value,weight,si+1,capacity,n);
+
+	int result = max(include,exclude);
+
+	knapSackDP[si][capacity] = result;
+
+	for(int i=0;i<5;i++){
+		for(int j=0;j<9;j++){
+			cout<<knapSackDP[i][j]<<"\t";
+		}
+		cout<<endl;
+	}
+	cout<<"***************************************************"<<endl;
+
+	return result;
+}
+
 int main(){
 
 //*************FIBONACCI************
@@ -659,8 +713,8 @@ int main(){
 
 //*************LEETCODE 115. Distinct Subsequences************
 
-	string s = "bbaag";
-	string t = "bag";
+	// string s = "bbaag";
+	// string t = "bag";
 
 	// memset(distinctDP,-1,sizeof(distinctDP));
 	// cout<<helper(s,0,t,0)<<endl;
@@ -670,6 +724,17 @@ int main(){
 	// cout<<distinctSubsequenceDP(s,t)<<endl;
 
 //************* KNAPSACK ******************
+
+	int value[] = {50,40,70,40};
+	int weight[]= {5, 4, 6, 3};
+	int capacity = 8;
+
+	int n = 4;
+
+	// cout<<knapSack(value,weight,0,capacity,n)<<endl;
+
+	memset(knapSackDP,-1,sizeof(knapSackDP));
+	cout<<knapSackMemo(value,weight,0,capacity,n)<<endl;
 
 	return 0;
 }
