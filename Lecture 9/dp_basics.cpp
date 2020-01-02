@@ -318,7 +318,7 @@ bool isPossible(int arr[],int n){
 	return partitionEqualSumSubset(arr,n,0,0,total);
 }
 
-int longestIncreasingSubsequence(string s1,string s2){
+int longestCommonSubsequence(string s1,string s2){
 	if(s1.length()==0 or s2.length()==0){
 		return 0;
 	}
@@ -331,12 +331,12 @@ int longestIncreasingSubsequence(string s1,string s2){
 
 	if(ch1==ch2){
 
-		return 1 + longestIncreasingSubsequence(ros1,ros2);
+		return 1 + longestCommonSubsequence(ros1,ros2);
 
 	}else{
 
-		int firstChoice = longestIncreasingSubsequence(s1,ros2);
-		int secondChoice = longestIncreasingSubsequence(ros1,s2);
+		int firstChoice = longestCommonSubsequence(s1,ros2);
+		int secondChoice = longestCommonSubsequence(ros1,s2);
 
 		return max(firstChoice,secondChoice);
 	}
@@ -387,6 +387,71 @@ int lcsMemo(string s1,string s2){
 	cout<<"*********************"<<endl;
 
 	return result;
+}
+
+int lcsDP(string s1,string s2){
+
+	int lcsStorage[s1.length() + 1][s2.length() + 1];
+
+	for(int i=0;i<=s1.length();i++){
+		lcsStorage[i][0] = 0;
+	}
+
+	for(int j=0;j<=s2.length();j++){
+		lcsStorage[0][j] = 0;
+	}
+
+	for(int row = 1;row<=s1.length();row++){
+		for(int col = 1;col<=s2.length();col++){
+
+			if(s1[row-1]==s2[col-1]){
+
+				lcsStorage[row][col] = lcsStorage[row-1][col-1] + 1;
+
+			}else{
+
+				lcsStorage[row][col] = max(lcsStorage[row-1][col],lcsStorage[row][col-1]);
+
+			}
+
+		}
+	}
+
+	return lcsStorage[s1.length()][s2.length()];
+}
+
+int findTargetSumWays(vector<int>& nums, int S) {
+        
+    unordered_map<string,int> h;
+    return targetSum(nums,0,0,S,h);
+}
+    
+int targetSum(vector<int> nums,int si,int sum,int S,unordered_map<string,int> &h){
+    string key = to_string(si) + " " + to_string(sum);
+        
+    if(h.count(key)){
+        return h[key];
+    }
+        
+        // cout<<key<<endl;
+        
+    if(si==nums.size()){
+        if(sum==S){
+            return 1;
+        }else{
+            return 0;
+        }
+    }
+        
+        
+    int positive = targetSum(nums,si+1,sum + nums[si],S,h);
+    int negative = targetSum(nums,si+1,sum - nums[si],S,h);
+        
+    int total = positive + negative;
+        
+    h[key] = total;
+        
+    return total;
 }
 
 int main(){
@@ -456,11 +521,19 @@ int main(){
 
 //*************LONGEST COMMON SUBSEQUENCE 1143***************
 
-	// cout<<longestIncreasingSubsequence("abcdef","gahcdef")<<endl;
+	// cout<<longestCommonSubsequence("abcdef","gahcdef")<<endl;
 
-	memset(dp,-1,sizeof(dp));
+	// memset(dp,-1,sizeof(dp));
 
-	cout<<lcsMemo("bcdef","hcpef")<<endl;
+	// cout<<lcsMemo("bcdef","hcpef")<<endl;
+
+	// cout<<lcsDP("bcdef","hcpef")<<endl;
+
+//*************LEETCODE 494. Target Sum************
+	int arr[] = {1, 1, 1, 1, 1} //Convert it to vector
+	int S = 3;
+	int n = 5;
+
 
 	return 0;
 }
