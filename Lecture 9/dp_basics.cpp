@@ -134,6 +134,8 @@ int reduceToOneDP(int n){
 	return dp[n];
 }
 
+// Count Board Path
+
 int countBoardPath(int start,int end){
 	if(start==end){
 		return 1;
@@ -151,6 +153,8 @@ int countBoardPath(int start,int end){
 
 	return count;
 }
+
+// Count Board Path With Memoization
 
 int countBoardPathMemo(int start,int end,int dp[]){
 	if(start==end){
@@ -183,6 +187,8 @@ int countBoardPathMemo(int start,int end,int dp[]){
 	return count;
 }
 
+// Count Board Path Pure DP
+
 int countBoardPathDP(int start,int end){
 	int dp[end + 1];
 
@@ -202,6 +208,8 @@ int countBoardPathDP(int start,int end){
 
 	return dp[start];
 }
+
+// Perfect Square With Memoization
     
 int perfectSquare(int n,int dp[]){
     if(n==0){
@@ -238,6 +246,8 @@ int numSquaresMemo(int n) {
     return perfectSquare(n,dp);
 }
 
+// Perfect Square with Pure DP
+
 int numSquaresDP(int n) {
         
     int dp[n+1];
@@ -259,6 +269,8 @@ int numSquaresDP(int n) {
         
     return dp[n];
 }
+
+// Longest Increasing Subsequence
 
 int lengthOfLIS(vector<int>& nums) {
         
@@ -287,6 +299,7 @@ int lengthOfLIS(vector<int>& nums) {
     return maxLength;
 }
 
+// Partition Equal Subset Sum
 
 bool partitionEqualSumSubset(int arr[],int n,int si,int sum,int total){
 	if(2*sum==total){
@@ -318,6 +331,8 @@ bool isPossible(int arr[],int n){
 
 	return partitionEqualSumSubset(arr,n,0,0,total);
 }
+
+// Longest Common Subsequence
 
 int longestCommonSubsequence(string s1,string s2){
 	if(s1.length()==0 or s2.length()==0){
@@ -421,11 +436,7 @@ int lcsDP(string s1,string s2){
 	return lcsStorage[s1.length()][s2.length()];
 }
 
-int findTargetSumWays(vector<int>& nums, int S) {
-        
-    unordered_map<string,int> h;
-    return targetSum(nums,0,0,S,h);
-}
+// Target Sum with Memoization
     
 int targetSum(vector<int> nums,int si,int sum,int S,unordered_map<string,int> &h){
     string key = to_string(si) + " " + to_string(sum);
@@ -454,6 +465,11 @@ int targetSum(vector<int> nums,int si,int sum,int S,unordered_map<string,int> &h
     return total;
 }
 
+int findTargetSumWays(vector<int>& nums, int S) {
+        
+    unordered_map<string,int> h;
+    return targetSum(nums,0,0,S,h);
+}
 
 // Distinct Subsequence (Memoization using 2D Array)
 
@@ -527,6 +543,38 @@ int numDistinct(string s, string t) {
         
     unordered_map<string,int> h;
     return distinctSubsequence(s,0,t,0,h);
+}
+
+// Distinct Subsequence Pure DP
+
+int distinctSubsequenceDP(string s, string t) {
+        
+    long long dp[s.length()+1][t.length()+1];
+        
+    for(int i=0;i<=t.length();i++){
+        dp[s.length()][i] = 0;
+    }
+        
+    for(int j=0;j<=s.length();j++){
+        dp[j][t.length()] = 1;
+    }
+        
+    for(int i=s.length()-1;i>=0;i--){
+        for(int j=t.length()-1;j>=0;j--){
+                
+            if(s[i]==t[j]){
+                    
+                dp[i][j] = dp[i+1][j+1] + dp[i+1][j];
+                    
+            }else{
+                dp[i][j] = dp[i+1][j];
+            }
+                
+        }
+    }
+        
+        
+    return dp[0][0];
 }
 
 int main(){
@@ -614,11 +662,14 @@ int main(){
 	string s = "bbaag";
 	string t = "bag";
 
-	memset(distinctDP,-1,sizeof(distinctDP));
-
-	cout<<helper(s,0,t,0)<<endl;
+	// memset(distinctDP,-1,sizeof(distinctDP));
+	// cout<<helper(s,0,t,0)<<endl;
 
 	// cout<<numDistinct(s,t)<<endl;
+
+	// cout<<distinctSubsequenceDP(s,t)<<endl;
+
+//************* KNAPSACK ******************
 
 	return 0;
 }
