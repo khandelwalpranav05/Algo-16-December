@@ -631,6 +631,56 @@ int knapSackMemo(int value[],int weight[],int si,int capacity,int n){
 	return result;
 }
 
+// Longest Palindromic Subsequence With Memoization
+    
+int helper(string str,int left,int right,vector< vector<int> > &dp){
+    if(left>right){
+        return 0;
+    }
+        
+    if(left==right){
+        return 1;
+    }
+        
+    if(dp[left][right]!=-1){
+        return dp[left][right];
+    }
+        
+    char ch1 = str[left];
+    char ch2 = str[right];
+        
+    int result;
+        
+    if(ch1==ch2){
+            
+        result = helper(str,left+1,right-1,dp) + 2;
+            
+    }else{
+            
+        int first = helper(str,left+1,right,dp);
+        int second = helper(str,left,right-1,dp);
+            
+        result = max(first,second);
+            
+    }
+        
+    dp[left][right] = result;
+        
+    return result;
+}
+
+int longestPalindromeSubseq(string s) {
+        
+    int row = s.length();
+    int col = s.length();
+        
+    vector< vector<int> > dp(row,vector<int> (col,-1));
+        
+    return helper(s,0,s.length()-1,dp);
+}
+
+// Longest Palindromic Subsequence With Pure DP
+
 int main(){
 
 //*************FIBONACCI************
@@ -725,16 +775,20 @@ int main(){
 
 //************* KNAPSACK ******************
 
-	int value[] = {50,40,70,40};
-	int weight[]= {5, 4, 6, 3};
-	int capacity = 8;
+	// int value[] = {50,40,70,40};
+	// int weight[]= {5, 4, 6, 3};
+	// int capacity = 8;
 
-	int n = 4;
+	// int n = 4;
 
-	// cout<<knapSack(value,weight,0,capacity,n)<<endl;
+	// // cout<<knapSack(value,weight,0,capacity,n)<<endl;
 
-	memset(knapSackDP,-1,sizeof(knapSackDP));
-	cout<<knapSackMemo(value,weight,0,capacity,n)<<endl;
+	// memset(knapSackDP,-1,sizeof(knapSackDP));
+	// cout<<knapSackMemo(value,weight,0,capacity,n)<<endl;
+
+// ************ LONGEST PALINDROMIC SUBSEQUENCE ***********
+
+	cout<<longestPalindromeSubseq("abeghebcg")<<endl;
 
 	return 0;
 }
