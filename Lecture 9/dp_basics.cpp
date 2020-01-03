@@ -631,6 +631,35 @@ int knapSackMemo(int value[],int weight[],int si,int capacity,int n){
 	return result;
 }
 
+// KNAPSACK PURE DP
+
+int knapSackPureDP(int value[],int weight[],int n,int capacity){
+
+	int dp[n+1][capacity+1];
+
+	for(int i=0;i<=n;i++){
+		dp[i][0] = 0;
+	}
+
+	for(int i=0;i<=capacity;i++){
+		dp[0][i] = 0;
+	}
+
+	for(int i=1;i<=n;i++){
+		for(int j=1;j<=capacity;j++){
+
+			if(weight[i-1]>j){
+				dp[i][j] = dp[i-1][j];
+			}else{
+				dp[i][j] = max(dp[i-1][j],dp[i-1][j - weight[i-1]] + value[i-1]);
+			}
+
+		}
+	}
+
+	return dp[n][capacity];
+}
+
 // Longest Palindromic Subsequence With Memoization
     
 int helper(string str,int left,int right,vector< vector<int> > &dp){
@@ -885,7 +914,7 @@ int main(){
 
 	// memset(knapSackDP,-1,sizeof(knapSackDP));
 	// cout<<knapSackMemo(value,weight,0,capacity,n)<<endl;
-
+	// cout<<knapSackPureDP(value,weight,n,capacity)<<endl;
 // ************ LONGEST PALINDROMIC SUBSEQUENCE 516 ***********
 
 	// cout<<longestPalindromeSubseq("abeghebcg")<<endl;
@@ -895,8 +924,8 @@ int main(){
 
 	
 // ************ COUNT PALINDROMIC SUBSEQUENCE ********
-	
-	
+
+
 
 	return 0;
 }
