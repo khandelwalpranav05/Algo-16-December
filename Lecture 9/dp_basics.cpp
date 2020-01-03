@@ -707,6 +707,46 @@ int longestPalindromeSubseqDP(string s) {
     return dp[0][n-1];   
 }
 
+// COIN CHANGE WITH MEMOIZATION
+    
+int helper(vector<int> coins,int amount,int dp[]){
+    if(amount==0){
+        return 0;
+    }
+        
+    if(amount<0){
+        return -1;
+    }
+        
+    if(dp[amount]!=0){
+        return dp[amount];
+    }
+        
+    int minValue = INT_MAX;
+        
+    for(int coin:coins){
+            
+        int recursionResult = helper(coins,amount - coin,dp); 
+            
+        if(recursionResult >=0){
+            minValue = min(minValue,recursionResult+1);
+        }
+    }
+        
+    dp[amount] = minValue==INT_MAX ? -1 : minValue;
+        
+    return dp[amount];
+}
+
+int coinChange(vector<int>& coins, int amount) {
+        
+    int dp[amount+1];
+    memset(dp,0,sizeof(dp));
+    return helper(coins,amount,dp);
+}
+
+// COIN CHANGE WITH PURE DP
+
 int main(){
 
 //*************FIBONACCI************
@@ -812,9 +852,17 @@ int main(){
 	// memset(knapSackDP,-1,sizeof(knapSackDP));
 	// cout<<knapSackMemo(value,weight,0,capacity,n)<<endl;
 
-// ************ LONGEST PALINDROMIC SUBSEQUENCE ***********
+// ************ LONGEST PALINDROMIC SUBSEQUENCE 516 ***********
 
-	cout<<longestPalindromeSubseq("abeghebcg")<<endl;
-	cout<<longestPalindromeSubseqDP("abeghebcg")<<endl;
+	// cout<<longestPalindromeSubseq("abeghebcg")<<endl;
+	// cout<<longestPalindromeSubseqDP("abeghebcg")<<endl;
+
+// ************ COIN CHANGE 322 **************
+
+	
+// ************ COUNT PALINDROMIC SUBSEQUENCE ********
+
+	
+
 	return 0;
 }
