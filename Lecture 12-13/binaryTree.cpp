@@ -180,6 +180,59 @@ DiaHeight diameterOptimized(node*root){
 	return val;
 }
 
+class BalanceHeight{
+public:
+	int height;
+	bool balance;
+};
+
+BalanceHeight isBalancedOptimized(node*root){
+	BalanceHeight val;
+	if(root==NULL){
+		val.height = -1;
+		val.balance = true;
+		return val;
+	}
+
+	BalanceHeight leftPair = isBalancedOptimized(root->left);
+	BalanceHeight rightPair = isBalancedOptimized(root->right);
+
+	val.height = max(leftPair.height,rightPair.height) + 1;
+
+	if(leftPair.balance==false or rightPair.balance==false){
+		val.balance = false;
+		return val;
+	}
+
+	int gap = abs(leftPair.height - rightPair.height);
+
+	if(gap>1){
+		val.balance = false;
+	}else{
+		val.balance = true;
+	}
+
+	return val;
+}
+
+void printRootToLeaf(node*root,string path){
+	if(root==NULL){
+		// cout<<path<<endl;
+		return;
+	}
+
+	string val = to_string(root->data);
+
+	if(root->left==NULL and root->right==NULL){
+		path = path + val;
+		cout<<path<<endl;
+		return;
+	}
+
+	printRootToLeaf(root->left,path + val);
+	printRootToLeaf(root->right,path + val);
+
+}
 
 int main(){
 
@@ -200,8 +253,13 @@ int main(){
 
 	// cout<<isBalanced(root)<<endl;
 
-	DiaHeight val = diameterOptimized(root);
-	cout<<val.diameter<<endl;
+	// DiaHeight val = diameterOptimized(root);
+	// cout<<val.diameter<<endl;
+
+	// BalanceHeight val = isBalancedOptimized(root);
+	// cout<<val.balance<<endl;
+
+	printRootToLeaf(root,"");
 
 	return 0;
 }
