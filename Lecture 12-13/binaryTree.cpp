@@ -255,6 +255,40 @@ node* lca(node* root,int data1,int data2){
 	}
 
 	return leftLCA!=NULL ? leftLCA : rightLCA;
+}
+
+int findDepth(node*root,int item,int level){
+	if(root==NULL){
+		return -1;
+	}
+
+	if(item==root->data){
+		return level;
+	}
+
+	int leftDepth = findDepth(root->left,item,level+1);
+
+	if(leftDepth==-1){
+		int rightDepth = findDepth(root->right,item,level+1);
+		return rightDepth;
+	}
+
+	return leftDepth;
+}
+
+int distanceBetweenNodes(node*root,int data1,int data2){
+
+	node* common = lca(root,data1,data2);
+
+	int d1 = findDepth(common,data1,0);
+	int d2 = findDepth(common,data2,0); 
+
+	return d1 + d2;
+}
+
+void leftView(node*root,int level){
+
+
 
 }
 
@@ -285,8 +319,11 @@ int main(){
 
 	// printRootToLeaf(root,"");
 
-	node* val = lca(root,3,6);
-	cout<<val->data<<endl;
+	// node* val = lca(root,3,6);
+	// cout<<val->data<<endl;
+
+	cout<<distanceBetweenNodes(root,3,6)<<endl;
+
 	return 0;
 }
 
