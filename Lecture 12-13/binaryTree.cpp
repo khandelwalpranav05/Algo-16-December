@@ -102,13 +102,14 @@ bool search(node* root,int item){
 	return leftSearch or rightSearch;
 }
 
-int height(node* root){
+// int height(node* root){
 
-}
 
-int diameter(node*root){
-	
-}
+// }
+
+// int diameter(node*root){
+
+// }
 
 int main(){
 
@@ -127,3 +128,7 @@ int main(){
 }
 
 // 4 2 1 -1 -1 3 -1 -1 6 5 -1 -1 7 -1 -1
+
+// FOR DIAMETER TESTING
+// 8 4 2 1 -1 -1 -1 3 -1 -1 5 -1 6 -1 -1
+// 4 2 8 9 10 -1 -1 -1 -1 7 -1 3 -1 4 -1 6 -1 -1 5 -1 -1
