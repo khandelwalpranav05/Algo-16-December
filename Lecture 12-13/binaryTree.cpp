@@ -286,11 +286,22 @@ int distanceBetweenNodes(node*root,int data1,int data2){
 	return d1 + d2;
 }
 
+int firstVisit = 0;
+
 void leftView(node*root,int level){
+	if(root==NULL){
+		return;
+	}
 
+	if(level==firstVisit){
+		cout<<root->data<<" ";
+		firstVisit++;
+	}
 
-
+	leftView(root->left,level+1);
+	leftView(root->right,level+1);
 }
+
 
 int main(){
 
@@ -322,7 +333,10 @@ int main(){
 	// node* val = lca(root,3,6);
 	// cout<<val->data<<endl;
 
-	cout<<distanceBetweenNodes(root,3,6)<<endl;
+	// cout<<distanceBetweenNodes(root,3,6)<<endl;
+
+	leftView(root,0);
+	cout<<endl;
 
 	return 0;
 }
@@ -335,3 +349,6 @@ int main(){
 // 1 -1 2 -1 3 -1 4 -1 5 -1 -1
 
 // FOR LCA
+
+// FOR LEFTVIEW
+// 4 2 8 9 10 -1 -1 -1 -1 7 -1 3 -1 4 -1 6 -1 -1 5 -1 -1
