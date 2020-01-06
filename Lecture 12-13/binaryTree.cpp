@@ -234,6 +234,30 @@ void printRootToLeaf(node*root,string path){
 
 }
 
+node* lca(node* root,int data1,int data2){
+	if(root==NULL){
+		return NULL;
+	}
+
+	if(root->data == data1 or root->data==data2){
+		return root;
+	}
+
+	node* leftLCA = lca(root->left,data1,data2);
+	node* rightLCA = lca(root->right,data1,data2);
+
+	if(leftLCA!=NULL and rightLCA!=NULL){
+		return root;
+	}
+
+	if(leftLCA==NULL and rightLCA==NULL){
+		return NULL;
+	}
+
+	return leftLCA!=NULL ? leftLCA : rightLCA;
+
+}
+
 int main(){
 
 	node* root = NULL;
@@ -259,8 +283,10 @@ int main(){
 	// BalanceHeight val = isBalancedOptimized(root);
 	// cout<<val.balance<<endl;
 
-	printRootToLeaf(root,"");
+	// printRootToLeaf(root,"");
 
+	node* val = lca(root,3,6);
+	cout<<val->data<<endl;
 	return 0;
 }
 
@@ -270,3 +296,5 @@ int main(){
 // 8 4 2 1 -1 -1 -1 3 -1 -1 5 -1 6 -1 -1
 // 4 2 8 9 10 -1 -1 -1 -1 7 -1 3 -1 4 -1 6 -1 -1 5 -1 -1
 // 1 -1 2 -1 3 -1 4 -1 5 -1 -1
+
+// FOR LCA
