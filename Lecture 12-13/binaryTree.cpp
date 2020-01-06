@@ -302,6 +302,63 @@ void leftView(node*root,int level){
 	leftView(root->right,level+1);
 }
 
+void leftBouandary(node*root){
+	if(root==NULL){
+		return;
+	}
+
+	if(root->left==NULL and root->right==NULL){
+		return;
+	}
+
+	cout<<root->data<<" ";
+
+	if(root->left!=NULL){
+		leftBouandary(root->left);
+	}else{
+		leftBouandary(root->right);
+	}
+}
+
+void printLeaf(node* root){
+	if(root==NULL){
+		return;
+	}
+
+	if(root->left==NULL and root->right==NULL){
+		cout<<root->data<<endl;
+		return;
+	}
+
+	printLeaf(root->left);
+	printLeaf(root->right);
+}
+
+int maxPathSum(TreeNode* root) {
+        
+    int maxSum = INT_MIN;
+    helper(root,maxSum);
+        
+    return maxSum;
+}
+    
+int helper(TreeNode* root,int &maxSum){
+    if(root==NULL){
+        return 0;
+    }
+        
+    int leftMax = helper(root->left,maxSum);
+    int rightMax = helper(root->right,maxSum);
+        
+    leftMax = max(leftMax,0);
+    rightMax = max(rightMax,0);
+        
+    maxSum = max(maxSum,leftMax+ rightMax + root->val);
+        
+    return max(leftMax,rightMax) + root->val;
+}
+
+}
 
 int main(){
 
