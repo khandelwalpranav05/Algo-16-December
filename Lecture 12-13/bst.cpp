@@ -65,12 +65,32 @@ void inOrder(node*root){
 	inOrder(root->right);
 }
 
+bool search(node* root,int item){
+	if(root==NULL){
+		return false;
+	}
+
+	if(item==root->data){
+		return true;
+	}
+
+	if(item>root->data){
+		return search(root->right,item);
+	}else{
+		return search(root->left,item);
+	}
+}
+
+
 int main(){
 
 	node* root = insert();
 
 	inOrder(root);
 	cout<<endl;
+
+	cout<<search(root,3)<<endl;
+	cout<<search(root,33)<<endl;
 
 	return 0;
 }
