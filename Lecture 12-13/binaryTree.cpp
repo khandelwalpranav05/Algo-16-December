@@ -56,6 +56,60 @@ int countNodes(node*root){
 	return leftCount + rightCount + 1;
 }
 
+int sumOfNodes(node*root){
+	if(root==NULL){
+		return 0;
+	}
+
+	int leftSum = sumOfNodes(root->left);
+	int rightSum = sumOfNodes(root->right);
+
+	return leftSum + rightSum + root->data;
+}
+
+void postOrder(node*root){
+	if(root==NULL){
+		return;
+	}
+
+	postOrder(root->left);
+	postOrder(root->right);
+	cout<<root->data<<" ";
+}
+
+void inOrder(node*root){
+	if(root==NULL){
+		return;
+	}
+
+	inOrder(root->left);
+	cout<<root->data<<" ";
+	inOrder(root->right);
+}
+
+bool search(node* root,int item){
+	if(root==NULL){
+		return false;
+	}
+
+	if(root->data==item){
+		return true;
+	}
+
+	bool leftSearch = search(root->left,item);
+	bool rightSearch = search(root->right,item);
+
+	return leftSearch or rightSearch;
+}
+
+int height(node* root){
+
+}
+
+int diameter(node*root){
+	
+}
+
 int main(){
 
 	node* root = NULL;
@@ -65,7 +119,9 @@ int main(){
 	preorder(root);
 	cout<<endl;
 
-	cout<<countNodes(root)<<endl;
+	// cout<<countNodes(root)<<endl;
+	// cout<<sumOfNodes(root)<<endl;
+	// cout<<search(root,2)<<endl;
 
 	return 0;
 }
