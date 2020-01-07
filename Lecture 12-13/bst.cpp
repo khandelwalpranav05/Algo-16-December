@@ -138,6 +138,24 @@ int numTrees(int n) {
     return countBST(n);
 }
 
+    
+void helper(TreeNode* root,int &k,int &ans){
+    if(root==NULL){
+        return;
+    }
+        
+    helper(root->left,k,ans);
+    k--;
+    if(k==0) ans = root->val;
+    helper(root->right,k,ans);
+}
+
+int kthSmallest(TreeNode* root, int k) {
+    int ans = 0;
+    helper(root,k,ans);
+    return ans;
+}
+
 int main(){
 
 	// node* root = insert();
