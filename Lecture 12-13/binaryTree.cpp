@@ -358,7 +358,6 @@ int helper(TreeNode* root,int &maxSum){
     return max(leftMax,rightMax) + root->val;
 }
 
-}
 
 int main(){
 

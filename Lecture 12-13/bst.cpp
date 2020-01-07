@@ -81,16 +81,79 @@ bool search(node* root,int item){
 	}
 }
 
+bool isBST(node*root,int leftRange = INT_MIN,int rightRange=INT_MAX){
+	if(root==NULL){
+		return true;
+	}
+
+	bool leftBST = isBST(root->left,leftRange,root->data);
+	bool rightBST = isBST(root->right,root->data,rightRange);
+
+	if(!leftBST or !rightBST or root->data<leftRange or root->data > rightRange){
+		return false;
+	}else{
+		return true;
+	}
+}
+
+node* constructTree(){
+	int data;
+	cin>>data;
+
+	if(data==-1){
+		return NULL;
+	}
+
+	node*root = NULL;
+
+	if(root==NULL){
+		root = new node(data);
+	}
+
+	root->left = constructTree();
+	root->right = constructTree();
+
+	return root;
+}
+    
+int countBST(int n){
+    if(n==0){
+        return 1;
+    }
+        
+    int ans = 0;
+        
+    for(int i=1;i<=n;i++){
+            
+        int leftBST = countBST(i-1);
+        int rightBST = countBST(n-i);
+            
+        ans +=leftBST*rightBST;
+    }
+        
+    return ans;
+}
+
+int numTrees(int n) {
+    return countBST(n);
+}
 
 int main(){
 
-	node* root = insert();
+	// node* root = insert();
 
-	inOrder(root);
-	cout<<endl;
+	// inOrder(root);
+	// cout<<endl;
 
-	cout<<search(root,3)<<endl;
-	cout<<search(root,33)<<endl;
+	// cout<<isBST(root)<<endl;
+
+	node* root = NULL;
+	root = constructTree();
+
+	cout<<isBST(root)<<endl;
+
+	// cout<<search(root,3)<<endl;
+	// cout<<search(root,33)<<endl;
 
 	return 0;
 }
