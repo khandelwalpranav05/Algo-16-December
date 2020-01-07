@@ -1,4 +1,5 @@
 #include <iostream>
+#include <queue>
 
 using namespace std;
 
@@ -162,6 +163,21 @@ int numTrees(int n) {
     return countBST(n);
 }
 
+int numTreesDP(int n) {
+    int dp[n+1];
+        
+    dp[0] = 1;
+    dp[1] = 1;
+        
+    for(int i=2;i<=n;i++){
+        dp[i] = 0;
+        for(int j=1;j<=i;j++){
+            dp[i]+=dp[j-1]*dp[i-j];
+        }
+    }
+        
+    return dp[n];
+}
     
 void helper(node* root,int &k,int &ans){
     if(root==NULL){
@@ -217,6 +233,155 @@ TreeDetail largestBSTinAbinaryTree(node* root){
 	return val;
 }
 
+node* buildTreeFromArray(int arr[],int start,int end){
+	if(start>end){
+		return NULL;
+	}
+
+	int mid = start + (end - start)/2;
+
+	node* root = new node(arr[mid]);
+
+	root->left = buildTreeFromArray(arr,start,mid-1);
+	root->right = buildTreeFromArray(arr,mid+1,end);
+
+	return root;
+}
+
+int sumReplacement(node* root){
+	if(root==NULL){
+		return 0;
+	}
+
+	if(root->left==NULL and root->right==NULL){
+		return root->data;
+	}
+
+	int leftSum = sumReplacement(root->left);
+	int rightSum = sumReplacement(root->right);
+
+	int temp = root->data;
+	root->data = leftSum + rightSum;
+
+	return temp + root->data;
+}
+
+void serialize(node*root){
+	if(root==NULL){
+		cout<<(-1)<<" ";
+		return;
+	}
+
+	cout<<root->data<<" ";
+	serialize(root->left);
+	serialize(root->right);
+}
+
+int preOrderIndex = 0;
+
+node* builtFromPreorderInorder(int pre[],int in[],int start,int end){
+	if(start==end){
+		return new node(pre[preOrderIndex++]);
+	}
+
+	node* root = new node(pre[preOrderIndex]);
+
+	int mid;
+
+	for(int i = start;i<=end;i++){
+		if(pre[preOrderIndex] == in[i]){
+			mid = i;
+			break;
+		}
+	}
+
+	preOrderIndex++;
+
+	root->left = builtFromPreorderInorder(pre,in,start,mid-1);
+	root->right = builtFromPreorderInorder(pre,in,mid+1,end);
+
+	return root;
+}
+
+class LinkedListPair{
+public:
+	node* head;
+	node* tail;
+};
+
+LinkedListPair treeToLinkedList(node*root){
+	LinkedListPair val;
+
+	if(root==NULL){
+		val.head = NULL;
+		val.tail = NULL;
+		return val;
+	}
+
+	if(root->left==NULL and root->right==NULL){
+		val.head =root;
+		val.tail = root;
+		return val;
+	}
+
+	if(root->left!=NULL and root->right==NULL){
+		LinkedListPair leftPair = treeToLinkedList(root->left);
+
+		leftPair.tail->right = root;
+
+		val.head = leftPair.head;
+		val.tail = root;
+		return val;
+	}
+
+	if(root->left==NULL and root->right!=NULL){
+
+		LinkedListPair rightPair = treeToLinkedList(root->right);
+		root->right = rightPair.head;
+
+		val.head = root;
+		val.tail = rightPair.tail;
+		return val;
+	}
+
+	if(root->left!=NULL and root->right!=NULL){
+
+		LinkedListPair leftPair = treeToLinkedList(root->left);
+		LinkedListPair rightPair = treeToLinkedList(root->right);
+
+		leftPair.tail->right = root;
+		root->right = rightPair.head;
+
+		val.head = leftPair.head;
+		val.tail = rightPair.tail;
+		return val;
+	}
+}
+
+void levelOrder(node*root){
+
+	queue<node*> q;
+
+	q.push(root);
+
+	while(!q.empty()){
+
+		node* temp = q.front();
+		q.pop();
+
+		cout<<temp->data<<" ";
+
+		if(temp->left){
+			q.push(temp->left);
+		}
+
+		if(temp->right){
+			q.push(temp->right);
+		}
+	}
+	cout<<endl;
+}
+
 int main(){
 
 	// node* root = insert();
@@ -229,13 +394,42 @@ int main(){
 	node* root = NULL;
 	root = constructTree();
 
-	TreeDetail check = largestBSTinAbinaryTree(root);
-	cout<<check.size<<endl;
+	// levelOrder(root);
+
+	// serialize(root);
+	// cout<<endl;
+
+	// sumReplacement(root);
+
+	// preorder(root);
+	// cout<<endl;
+
+	// TreeDetail check = largestBSTinAbinaryTree(root);
+	// cout<<check.size<<endl;
 
 	// cout<<isBST(root)<<endl;
 
 	// cout<<search(root,3)<<endl;
 	// cout<<search(root,33)<<endl;
+
+	// int pre[] = {4,2,1,3,6,5,7};
+	// int in[] = {1,2,3,4,5,6,7};
+	// int n = 7;
+
+	// node* root = builtFromPreorderInorder(pre,in,0,n-1);
+
+	// preorder(root);
+	// cout<<endl;
+
+	// LinkedListPair val = treeToLinkedList(root);
+
+	// node* temp = val.head;
+
+	// while(temp!=NULL){
+	// 	cout<<temp->data<<" ";
+	// 	temp = temp->right;
+	// }
+	// cout<<endl;
 
 	return 0;
 }
@@ -244,3 +438,8 @@ int main(){
 
 // Input for largest bst in a bt
 // 8 4 2 1 -1 -1 3 -1 -1 6 5 -1 -1 7 -1 -1 9 7 -1 -1 10 -1 -1
+
+// Input for sum replacement
+// 1 2 3 -1 -1 4 5 -1 -1 6 -1 -1 9 8 -1 -1 7 -1 -1
+
+// 1 2 4 -1 -1 5 -1 -1 3 6 -1 -1 7 -1 -1
