@@ -163,21 +163,58 @@ int numTrees(int n) {
 }
 
     
-void helper(TreeNode* root,int &k,int &ans){
+void helper(node* root,int &k,int &ans){
     if(root==NULL){
         return;
     }
         
     helper(root->left,k,ans);
     k--;
-    if(k==0) ans = root->val;
+    if(k==0) ans = root->data;
     helper(root->right,k,ans);
 }
 
-int kthSmallest(TreeNode* root, int k) {
+int kthSmallest(node* root, int k) {
     int ans = 0;
     helper(root,k,ans);
     return ans;
+}
+
+class TreeDetail{
+public:
+	int size;
+	bool bst;
+	int min;
+	int max;
+};
+
+TreeDetail largestBSTinAbinaryTree(node* root){
+	TreeDetail val;
+
+	if(root==NULL){
+		val.size = 0;
+		val.bst = true;
+		val.min = INT_MAX;
+		val.max = INT_MIN;
+		return val;
+	}
+
+	TreeDetail leftStatus = largestBSTinAbinaryTree(root->left);
+	TreeDetail rightStatus = largestBSTinAbinaryTree(root->right);
+
+	if(!leftStatus.bst or !rightStatus.bst or root->data > rightStatus.min or root->data < leftStatus.max){
+		val.bst = false;
+		val.size = max(leftStatus.size,rightStatus.size);
+		return val;
+	}
+
+	val.bst = true;
+	val.size = leftStatus.size + rightStatus.size + 1;
+
+	val.min = root->left!=NULL ? leftStatus.min : root->data;
+	val.max = root->right!=NULL ? rightStatus.max : root->data;
+
+	return val;
 }
 
 int main(){
@@ -189,8 +226,11 @@ int main(){
 
 	// cout<<isBST(root)<<endl;
 
-	// node* root = NULL;
-	// root = constructTree();
+	node* root = NULL;
+	root = constructTree();
+
+	TreeDetail check = largestBSTinAbinaryTree(root);
+	cout<<check.size<<endl;
 
 	// cout<<isBST(root)<<endl;
 
