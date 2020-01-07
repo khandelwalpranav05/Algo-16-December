@@ -134,6 +134,30 @@ int countBST(int n){
     return ans;
 }
 
+// int countBST(int n,int dp[]){
+//         if(n==0){
+//             return 1;
+//         }
+        
+//         if(dp[n]!=-1){
+//             return dp[n];
+//         }
+        
+//         int ans = 0;
+        
+//         for(int i=1;i<=n;i++){
+            
+//             int leftBST = countBST(i-1,dp);
+//             int rightBST = countBST(n-i,dp);
+            
+//             ans +=leftBST*rightBST;
+//         }
+        
+//         dp[n] = ans;
+        
+//         return ans;
+//     }
+
 int numTrees(int n) {
     return countBST(n);
 }
@@ -165,10 +189,10 @@ int main(){
 
 	// cout<<isBST(root)<<endl;
 
-	node* root = NULL;
-	root = constructTree();
+	// node* root = NULL;
+	// root = constructTree();
 
-	cout<<isBST(root)<<endl;
+	// cout<<isBST(root)<<endl;
 
 	// cout<<search(root,3)<<endl;
 	// cout<<search(root,33)<<endl;
@@ -177,3 +201,6 @@ int main(){
 }
 
 // 4 2 1 3 6 5 7 -1
+
+// Input for largest bst in a bt
+// 8 4 2 1 -1 -1 3 -1 -1 6 5 -1 -1 7 -1 -1 9 7 -1 -1 10 -1 -1
