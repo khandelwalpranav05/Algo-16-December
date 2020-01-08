@@ -158,11 +158,6 @@ void quickSort(int arr[],int low,int high){
 		}
 	}
 
-	for(int i=0;i<6;i++){
-		cout<<arr[i]<<" ";
-	}
-	cout<<endl<<"****************"<<endl;
-
 	quickSort(arr,low,right);
 	quickSort(arr,left,high);
 }
