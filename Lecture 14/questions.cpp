@@ -63,7 +63,7 @@ int verticalOrder(){
 }
 
 int subarraySum(vector<int>& nums, int k) {
-            
+         
     unordered_map<int,int> h;
     int ans = 0;
     int sum = 0;
