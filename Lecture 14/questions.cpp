@@ -1,6 +1,6 @@
 #include <iostream>
 #include<unordered_map>	
-
+#include <list>
 
 using namespace std;
 
@@ -47,6 +47,12 @@ int longestSubarraySumWithZero(int arr[],int n){
 	}
 
 	return maxLength;
+}
+
+int verticalOrder(){
+
+	unordered_map<int,list<int> > h;
+
 }
 
 int main(){
