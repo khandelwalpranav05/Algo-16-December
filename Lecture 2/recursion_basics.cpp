@@ -8,9 +8,6 @@ int sumTilln(int n){
 	}
 
 	return n+sumTilln(n-1);
-
-	// int recursionResult = sumTilln(n-1);
-	// return n+recursionResult;
 }
 
 int factorial(int n){
