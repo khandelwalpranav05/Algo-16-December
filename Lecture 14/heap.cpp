@@ -67,6 +67,19 @@ int erase(vector<int> &v){
 	return temp;
 }
 
+int eraseAtAnyIndex(vector<int> &v,int idx){
+
+	int temp = v[idx];
+	int n = v.size() - 1;
+	swap(v[idx],v[n]);
+
+	v.pop_back();
+
+	downHeapify(v,idx);
+
+	return temp;
+}
+
 int main(){
 
 	vector<int> v({40,30,20,25,17,19});
@@ -75,7 +88,7 @@ int main(){
 
 	display(v);
 
-	erase(v);
+	eraseAtAnyIndex(v,1);
 
 	display(v);
 
