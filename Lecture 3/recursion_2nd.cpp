@@ -1,5 +1,5 @@
 #include <iostream>
-#include<climits>
+#include <climits>
 
 using namespace std;
 
@@ -305,13 +305,6 @@ int main(){
 	// printBoardPath(0,3,"");
 
 	// cout<<countMazePathDia(0,0,2,2)<<endl;
-
-
-
-
-
-
-
 
 	return 0;
 }
