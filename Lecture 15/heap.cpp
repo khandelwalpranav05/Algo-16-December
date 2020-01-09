@@ -80,15 +80,32 @@ int eraseAtAnyIndex(vector<int> &v,int idx){
 	return temp;
 }
 
+void arrayToHeap(vector<int> &v){
+
+	int n = v.size();
+	int start = n/2 - 1;
+
+	for(int i=start;i>=0;i--){
+		downHeapify(v,i);
+	}
+}
+
+
+
 int main(){
 
-	vector<int> v({40,30,20,25,17,19});
+	// vector<int> v({40,30,20,25,17,19});
 
-	insert(v,50);
+	// insert(v,50);
 
-	display(v);
+	// display(v);
 
-	eraseAtAnyIndex(v,1);
+	// eraseAtAnyIndex(v,1);
+
+	// display(v);
+
+	vector<int> v({4,1,3,6,8,2,5});
+	arrayToHeap(v);
 
 	display(v);
 
