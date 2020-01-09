@@ -1,5 +1,7 @@
 #include <iostream>
 #include <queue>
+#include <unordered_map>
+#include <list>
 
 using namespace std;
 
@@ -380,6 +382,26 @@ void levelOrder(node*root){
 		}
 	}
 	cout<<endl;
+}
+
+void verticalOrder(node*root,int v,int unordered_map<int,list<int> > &h){
+	if(root==NULL){
+		return;
+	}
+
+	h[v].push_back(root->data);
+
+	verticalOrder(root->left,v-1,h);
+	verticalOrder(root->right,v+1,h);
+}
+
+void topView(node*root){
+
+	unordered_map<int,list<int> > h;
+
+	verticalOrder(root,0,h);
+
+	
 }
 
 int main(){
