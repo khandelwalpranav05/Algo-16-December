@@ -384,7 +384,7 @@ void levelOrder(node*root){
 	cout<<endl;
 }
 
-void verticalOrder(node*root,int v,int unordered_map<int,list<int> > &h){
+void verticalOrder(node*root,int v,unordered_map<int,list<int> > &h){
 	if(root==NULL){
 		return;
 	}
@@ -401,7 +401,20 @@ void topView(node*root){
 
 	verticalOrder(root,0,h);
 
-	
+	// Level Order
+
+	int minValue = INT_MAX;
+	int maxValue = INT_MIN;
+
+	for(auto var:h){
+		minValue = min(var.first,minValue);
+		maxValue = max(var.first,maxValue);
+	}
+
+	for(int i=minValue;i<=maxValue;i++){
+		cout<<h[i].front()<<" ";
+	}
+	cout<<endl;
 }
 
 int main(){
@@ -415,6 +428,8 @@ int main(){
 
 	node* root = NULL;
 	root = constructTree();
+
+	topView(root);
 
 	// levelOrder(root);
 
