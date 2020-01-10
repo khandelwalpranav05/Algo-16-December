@@ -56,6 +56,41 @@ public:
 
 		cout<<endl;
 	}
+
+	void helper(T node,unordered_map<T,bool> &visited){
+
+		cout<<node<<" ";
+		visited[node] = true;
+
+		for(T neighbor:adjList[node]){
+			if(!visited[neighbor]){
+				helper(neighbor,visited);
+			}
+		}
+	}
+
+	void dfs(T src){
+		unordered_map<T,bool> visited;
+
+		int connectComponents = 0;
+
+		for(auto node:adjList){
+
+			T element = node.first;
+
+			if(!visited[element]){
+				helper(element,visited);
+				cout<<endl;
+				connectComponents++;
+			}
+		}
+
+		cout<<"Connected Components "<<connectComponents<<endl;
+	}
+
+	void dfsTopologicalSort(T src){
+		
+	}
 };	
 
 
@@ -91,9 +126,20 @@ int main(){
 	g.addEgde(4,5);
 	g.addEgde(5,6);
 
+	g.addEgde(7,8);
+	g.addEgde(9,8);
+	g.addEgde(7,9);
+
+	g.addEgde(16,15);
+
+	g.addEgde(17,18);
+
+
 	g.display();
 
 	g.bfs(1);
+
+	g.dfs(1);
 
 	return 0;
 }
