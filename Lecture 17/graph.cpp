@@ -1,6 +1,7 @@
 #include <iostream>
 #include <unordered_map>
 #include <list>
+#include <queue>
 
 using namespace std;
 
@@ -31,7 +32,29 @@ public:
 	}
 
 	void bfs(T src){
-		
+
+		queue<T> q;
+		unordered_map<T,bool> visited;
+
+		q.push(src);
+		visited[src] = true;
+
+		while(!q.empty()){
+
+			T node = q.front();
+			q.pop();
+
+			cout<<node<<" ";
+
+			for(auto neighbor:adjList[node]){
+				if(!visited[neighbor]){
+					q.push(neighbor);
+					visited[neighbor] = true;
+				}
+			}
+		}
+
+		cout<<endl;
 	}
 };	
 
@@ -48,15 +71,29 @@ int main(){
 
 	// g.display();
 
-	Graph<char> g;
+	// Graph<char> g;
 
-	g.addEgde('a','b');
-	g.addEgde('a','c');
-	g.addEgde('a','d');
-	g.addEgde('b','d');
-	g.addEgde('c','d');
+	// g.addEgde('a','b');
+	// g.addEgde('a','c');
+	// g.addEgde('a','d');
+	// g.addEgde('b','d');
+	// g.addEgde('c','d');
+
+	// g.display();
+
+	Graph<int> g;
+
+	g.addEgde(1,2);
+	g.addEgde(1,4);
+	g.addEgde(3,2);
+	g.addEgde(3,4);
+	g.addEgde(3,5);
+	g.addEgde(4,5);
+	g.addEgde(5,6);
 
 	g.display();
+
+	g.bfs(1);
 
 	return 0;
 }
