@@ -776,7 +776,29 @@ int coinChange(vector<int>& coins, int amount) {
 
 // COIN CHANGE WITH PURE DP
 
-
+int coinChange(vector<int>& coins, int amount) {
+        
+    int dp[amount + 1];
+    for(int i=0;i<=amount;i++) dp[i] = amount+1;
+        
+    dp[0] = 0;
+        
+    for(int i=1;i<=amount;i++){
+            
+        for(int coin:coins){
+                
+            if(i - coin>=0){
+                    
+                dp[i] = min(dp[i],dp[i-coin] + 1);
+                    
+            }
+                
+        }
+    }
+        
+    return dp[amount] > amount ? -1 : dp[amount];
+        
+}
 
 // COUNT PALINDROMIC SUBSTRINGS
 
@@ -809,6 +831,71 @@ int countSubstrings(string s) {
         
     return result;
 }
+
+// COIN CHANGE 2
+
+int helper(vector<int> coins,int si,int amount,vector<vector<int> > &dp){
+        
+    if(amount==0){
+        return 1;
+    }
+        
+    if(si==coins.size()){
+        return 0;
+    }
+        
+    if(dp[si][amount]!=-1){
+        return dp[si][amount];
+    }
+        
+    int count = 0;
+        
+    if(amount>=coins[si]){
+        count+=helper(coins,si,amount - coins[si],dp);
+    }
+    count+=helper(coins,si+1,amount,dp);
+        
+    dp[si][amount]=count;
+        
+    return count;
+}
+
+int change(int amount, vector<int>& coins) {
+    if(amount==0){
+        return 1;
+    }
+        
+    if(coins.size()==0){
+        return 0;
+    }
+        
+        // PURE DP
+        
+    int dp[amount+1] = {0};
+    dp[0] = 1;
+        
+    for(int coin:coins){
+        for(int amt = 1;amt<=amount;amt++){
+            if(amt>=coin){
+                dp[amt] += dp[amt - coin];
+            }
+        }
+    }
+        
+    return dp[amount];
+
+    // COIN CHANGE 2 WITH MEMOIZATION
+        
+    // unordered_map<string,int> dp;
+        
+    // int row = coins.size() + 1;
+    // int col = amount + 1;
+        
+    // vector<vector<int> >  dp(row,vector<int>(col,-1));
+        
+    // return helper(coins,0,amount,dp);
+}
+
 
 int main(){
 
@@ -915,6 +1002,7 @@ int main(){
 	// memset(knapSackDP,-1,sizeof(knapSackDP));
 	// cout<<knapSackMemo(value,weight,0,capacity,n)<<endl;
 	// cout<<knapSackPureDP(value,weight,n,capacity)<<endl;
+
 // ************ LONGEST PALINDROMIC SUBSEQUENCE 516 ***********
 
 	// cout<<longestPalindromeSubseq("abeghebcg")<<endl;
@@ -926,6 +1014,10 @@ int main(){
 // ************ COUNT PALINDROMIC SUBSEQUENCE ********
 
 
+// ************* HOUSE ROBBERS ************
+
+
+// ************ COIN CHANGE 2 518 **************
 
 	return 0;
 }
