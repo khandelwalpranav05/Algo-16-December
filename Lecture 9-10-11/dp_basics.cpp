@@ -310,8 +310,6 @@ bool partitionEqualSumSubset(int arr[],int n,int si,int sum,int total){
 		return false;
 	}
 
-
-
 	bool include = partitionEqualSumSubset(arr,n,si+1,sum+arr[si],total);
 	bool exclude = partitionEqualSumSubset(arr,n,si+1,sum,total);
 
@@ -445,8 +443,6 @@ int targetSum(vector<int> nums,int si,int sum,int S,unordered_map<string,int> &h
         return h[key];
     }
         
-        // cout<<key<<endl;
-        
     if(si==nums.size()){
         if(sum==S){
             return 1;
@@ -473,7 +469,7 @@ int findTargetSumWays(vector<int>& nums, int S) {
 
 // Distinct Subsequence (Memoization using 2D Array)
 
-int distinctDP[6][4];
+int distinctDP[100][100];
 
 int helper(string s,int si,string t,int ti){
     if(ti==t.length()){
@@ -577,6 +573,8 @@ int distinctSubsequenceDP(string s, string t) {
     return dp[0][0];
 }
 
+// KNAPSACK
+
 int knapSack(int value[],int weight[],int si,int capacity,int n){
 	if(si==n){
 		return 0;
@@ -594,6 +592,8 @@ int knapSack(int value[],int weight[],int si,int capacity,int n){
 	int result = max(include,exclude);
 	return result;
 }
+
+// KNAPSACK WITH MEMOIZATION
 
 int knapSackDP[5][9];
 
@@ -662,7 +662,7 @@ int knapSackPureDP(int value[],int weight[],int n,int capacity){
 
 // Longest Palindromic Subsequence With Memoization
     
-int helper(string str,int left,int right,vector< vector<int> > &dp){
+int longestPalindromeSubseqMemo(string str,int left,int right,vector< vector<int> > &dp){
     if(left>right){
         return 0;
     }
@@ -682,12 +682,12 @@ int helper(string str,int left,int right,vector< vector<int> > &dp){
         
     if(ch1==ch2){
             
-        result = helper(str,left+1,right-1,dp) + 2;
+        result = longestPalindromeSubseqMemo(str,left+1,right-1,dp) + 2;
             
     }else{
             
-        int first = helper(str,left+1,right,dp);
-        int second = helper(str,left,right-1,dp);
+        int first = longestPalindromeSubseqMemo(str,left+1,right,dp);
+        int second = longestPalindromeSubseqMemo(str,left,right-1,dp);
             
         result = max(first,second);
             
@@ -698,14 +698,14 @@ int helper(string str,int left,int right,vector< vector<int> > &dp){
     return result;
 }
 
-int longestPalindromeSubseq(string s) {
+int longestPalindromeSubseqMemo(string s) {
         
     int row = s.length();
     int col = s.length();
         
     vector< vector<int> > dp(row,vector<int> (col,-1));
         
-    return helper(s,0,s.length()-1,dp);
+    return longestPalindromeSubseqMemo(s,0,s.length()-1,dp);
 }
 
 // Longest Palindromic Subsequence With Pure DP
@@ -738,7 +738,7 @@ int longestPalindromeSubseqDP(string s) {
 
 // COIN CHANGE WITH MEMOIZATION
     
-int helper(vector<int> coins,int amount,int dp[]){
+int coinChangeMemo(vector<int> coins,int amount,int dp[]){
     if(amount==0){
         return 0;
     }
@@ -755,7 +755,7 @@ int helper(vector<int> coins,int amount,int dp[]){
         
     for(int coin:coins){
             
-        int recursionResult = helper(coins,amount - coin,dp); 
+        int recursionResult = coinChangeMemo(coins,amount - coin,dp); 
             
         if(recursionResult >=0){
             minValue = min(minValue,recursionResult+1);
@@ -767,16 +767,16 @@ int helper(vector<int> coins,int amount,int dp[]){
     return dp[amount];
 }
 
-int coinChange(vector<int>& coins, int amount) {
+int coinChangeMemo(vector<int>& coins, int amount) {
         
     int dp[amount+1];
     memset(dp,0,sizeof(dp));
-    return helper(coins,amount,dp);
+    return coinChangeMemo(coins,amount,dp);
 }
 
 // COIN CHANGE WITH PURE DP
 
-int coinChange(vector<int>& coins, int amount) {
+int coinChangeDP(vector<int>& coins, int amount) {
         
     int dp[amount + 1];
     for(int i=0;i<=amount;i++) dp[i] = amount+1;
@@ -832,9 +832,9 @@ int countSubstrings(string s) {
     return result;
 }
 
-// COIN CHANGE 2
+// COIN CHANGE 2 WITH MEMOIZATION
 
-int helper(vector<int> coins,int si,int amount,vector<vector<int> > &dp){
+int Coinchange2Memo(vector<int> coins,int si,int amount,vector<vector<int> > &dp){
         
     if(amount==0){
         return 1;
@@ -851,16 +851,30 @@ int helper(vector<int> coins,int si,int amount,vector<vector<int> > &dp){
     int count = 0;
         
     if(amount>=coins[si]){
-        count+=helper(coins,si,amount - coins[si],dp);
+        count+=Coinchange2Memo(coins,si,amount - coins[si],dp);
     }
-    count+=helper(coins,si+1,amount,dp);
+    count+=Coinchange2Memo(coins,si+1,amount,dp);
         
     dp[si][amount]=count;
         
     return count;
 }
 
-int change(int amount, vector<int>& coins) {
+int Coinchange2Memo(int amount, vector<int>& coins){
+        
+    unordered_map<string,int> dp;
+        
+    int row = coins.size() + 1;
+    int col = amount + 1;
+        
+    vector<vector<int> >  dp(row,vector<int>(col,-1));
+        
+    return Coinchange2Memo(coins,0,amount,dp);
+}
+	
+// COIN CHANGE 2 WITH PURE DP
+
+int Coinchange2DP(int amount, vector<int>& coins) {
     if(amount==0){
         return 1;
     }
@@ -883,19 +897,98 @@ int change(int amount, vector<int>& coins) {
     }
         
     return dp[amount];
-
-    // COIN CHANGE 2 WITH MEMOIZATION
-        
-    // unordered_map<string,int> dp;
-        
-    // int row = coins.size() + 1;
-    // int col = amount + 1;
-        
-    // vector<vector<int> >  dp(row,vector<int>(col,-1));
-        
-    // return helper(coins,0,amount,dp);
 }
 
+// HOUSE ROBBER WITH MEMOIZATION
+    
+int robMemo(vector<int> nums,int si,int dp[]){
+    if(si>=nums.size()){
+        return 0;
+    }
+        
+    if(dp[si]!=-1){
+        return dp[si];
+    }
+        
+    int include = nums[si] + robMemo(nums,si+2,dp);
+    int skip = robMemo(nums,si+1,dp);
+        
+    int result = max(include,skip);
+        
+    dp[si] = result;
+        
+    return result;
+}
+
+int robMemo(vector<int>& nums) {
+    if(nums.size()==0){
+        return 0;
+    }
+        
+    int dp[nums.size() + 1];
+        
+    memset(dp,-1,sizeof(dp));
+    return robMemo(nums,0,dp);
+}
+
+// HOUSE ROBBER WITH PURE DP
+
+int robDP(vector<int>& nums) {
+    if(nums.size()==0){
+        return 0;
+    }
+        
+    int n = nums.size();
+        
+    int dp[n + 1];
+        
+    memset(dp,0,sizeof(dp));
+        
+    dp[0] = 0;
+    dp[1] = nums[0];
+        
+    for(int i=2;i<=n;i++){
+        dp[i] = max(dp[i-1],dp[i-2] + nums[i-1]);
+    }
+        
+    return dp[n];
+}
+
+// Palindrome Partitioning II PURE DP
+
+int PalindromePartitioningII(string s) {
+    int n = s.length();
+        
+    int dp[n+1];
+        
+    for (int i = 0; i <= n; i++) dp[i] = i-1;
+        
+    for(int i=0;i<s.length();i++){
+
+        for(int j=0; i-j>=0 and i+j<s.length() ;j++){
+
+            if(s[i-j]==s[i+j]){
+                    
+               dp[i+j+1] = min(dp[i+j+1],1+dp[i-j]);
+                    
+            }else{
+                break;
+            }
+        }
+
+        for(int j=0; i-j>=0 and i+j+1<s.length() ;j++){
+            if(s[i-j]==s[i+j+1]){
+                    
+               dp[i+j+2] = min(dp[i-j] + 1,dp[i+j+2]);
+                    
+            }else{
+                break;
+            }
+        }
+	}
+        
+    return dp[n];
+}
 
 int main(){
 
@@ -1018,6 +1111,9 @@ int main(){
 
 
 // ************ COIN CHANGE 2 518 **************
+
+
+// ************	Palindrome Partitioning II **************
 
 	return 0;
 }
