@@ -334,14 +334,8 @@ void printLeaf(node* root){
 	printLeaf(root->right);
 }
 
-int maxPathSum(TreeNode* root) {
-        
-    int maxSum = INT_MIN;
-    helper(root,maxSum);
-        
-    return maxSum;
-}
-    
+// Maximum Path Sum Leetcode 124
+ 
 int helper(TreeNode* root,int &maxSum){
     if(root==NULL){
         return 0;
@@ -356,6 +350,15 @@ int helper(TreeNode* root,int &maxSum){
     maxSum = max(maxSum,leftMax+ rightMax + root->val);
         
     return max(leftMax,rightMax) + root->val;
+}
+
+
+int maxPathSum(TreeNode* root) {
+        
+    int maxSum = INT_MIN;
+    helper(root,maxSum);
+        
+    return maxSum;
 }
 
 
